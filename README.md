@@ -25,7 +25,10 @@ This repository contains the frontend codebase for a web-based electronic voting
     pnpm install
     ```
 
-4. Configure env file from env.example file:
+4. Copy the `.env.example` file to `.env` and configure your environment variables, including your database connection details:
+    ```
+    cp .env.example .env
+    ```
 
 5. Start the development server:
 
