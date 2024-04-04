@@ -1,75 +1,39 @@
-# Nuxt 3 Minimal Starter
+# Frontend Village Election Voting System
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Description
 
-## Setup
+This repository contains the frontend codebase for a web-based electronic voting system designed specifically for village head elections. The system is built using Nuxt 3, a powerful framework for building Vue.js applications.
 
-Make sure to install the dependencies:
+## Requirements
+- Node.js >= 20.x
+- PNPM
 
-```bash
-# npm
-npm install
+## Installation
 
-# pnpm
-pnpm install
+1. Clone this repository to your local machine:
+    ```
+    https://github.com/ExeCiety/village-election-voting-system-frontend.git
+    ```
 
-# yarn
-yarn install
+2. Navigate to the project directory:
+    ```
+    cd village-election-voting-system-frontend
+    ```
 
-# bun
-bun install
-```
+3. Install dependencies using pnpm:
+    ```
+    pnpm install
+    ```
 
-## Development Server
+4. Configure env file from env.example file:
 
-Start the development server on `http://localhost:3000`:
+5. Start the development server:
 
-```bash
-# npm
-npm run dev
+    ```
+    pnpm run dev
+    ```
 
-# pnpm
-pnpm run dev
+6. Access the application in your web browser at `http://localhost:3000`.
 
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
+## Deployment
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
