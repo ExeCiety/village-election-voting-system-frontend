@@ -35,7 +35,7 @@
       type="submit"
       size="lg"
       block
-      :loading="uiState.isButtonLoading"
+      :loading="uiState.disabledInputs.button"
     >
       Masuk
     </UButton>
@@ -46,20 +46,20 @@
 import { ZodType } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 import type {
-  formOfficerLoginStateType,
-  formOfficerLoginUiStateType
+  LoginOfficerState,
+  LoginOfficerUiStateType
 } from '~/types/auth/login.type'
 import type { Schema } from '~/types/validation/validation.type'
 
-type formOfficerLoginPropsType = {
-  state: formOfficerLoginStateType
-  uiState: formOfficerLoginUiStateType
+type LoginOfficerProps = {
+  state: LoginOfficerState
+  uiState: LoginOfficerUiStateType
   schema: ZodType
   onSubmit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
   togglePasswordVisibility: () => void
 }
 
-defineProps<formOfficerLoginPropsType>()
+defineProps<LoginOfficerProps>()
 </script>
 
 <style scoped></style>

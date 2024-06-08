@@ -1,12 +1,12 @@
-export type formOfficerLoginStateType = {
+export type LoginOfficerState = {
   username: string
   password: string
 }
 
-export type formOfficerLoginUiStateType = {
+export type LoginOfficerUiStateType = {
   showPassword: boolean
-  isButtonLoading: boolean
   disabledInputs: {
+    button: boolean
     username: boolean
     password: boolean
   }
@@ -17,13 +17,13 @@ export type formOfficerLoginUiStateType = {
   }
 }
 
-export type formVoterLoginStateType = {
+export type LoginVoterStateType = {
   token: string
 }
 
-export type formVoterLoginUiStateType = {
-  isButtonLoading: boolean
+export type LoginVoterUiStateType = {
   disabledInputs: {
+    button: boolean
     token: boolean
   }
   error: string

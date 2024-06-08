@@ -1,13 +1,11 @@
 <template>
-  <div class="w-full h-[50%] px-8 md:px-10 lg:px-20">
-    <FormOfficerLogin
-      :state="state"
-      :uiState="uiState"
-      :schema="LOGIN_OFFICER"
-      :onSubmit="onSubmit"
-      :togglePasswordVisibility="togglePasswordVisibility"
-    />
-  </div>
+  <FormOfficerLogin
+    :state="state"
+    :uiState="uiState"
+    :schema="LOGIN_OFFICER"
+    :onSubmit="onSubmit"
+    :togglePasswordVisibility="togglePasswordVisibility"
+  />
 </template>
 
 <script setup lang="ts">
@@ -33,6 +31,7 @@ const uiState = reactive({
   showPassword: false,
   isButtonLoading: false,
   disabledInputs: {
+    button: false,
     username: false,
     password: false
   },
@@ -50,22 +49,19 @@ const togglePasswordVisibility = () => {
 const toggleInputs = (status: boolean) => {
   uiState.disabledInputs.username = status
   uiState.disabledInputs.password = status
+  uiState.disabledInputs.button = status
 }
 
 const onSubmit = async (
   event: FormSubmitEvent<Schema<typeof LOGIN_OFFICER>>
 ) => {
   try {
-    uiState.isButtonLoading = true
     uiState.showPassword = false
     toggleInputs(true)
   } catch (error) {
     // Handle error
   } finally {
-    // uiState.isButtonLoading = false
     // toggleInputs(false)
   }
 }
 </script>
-
-<style scoped></style>
