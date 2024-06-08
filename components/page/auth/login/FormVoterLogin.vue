@@ -7,6 +7,7 @@
         size="lg"
         placeholder="Masukan Token"
         :disabled="uiState.disabledInputs.token"
+        @input="handleInputOTP"
       />
     </UFormGroup>
     <UButton
@@ -14,7 +15,7 @@
       type="submit"
       size="lg"
       block
-      :loading="uiState.isButtonLoading"
+      :loading="uiState.disabledInputs.button"
     >
       Masuk
     </UButton>
@@ -25,19 +26,25 @@
 import { ZodType } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 import type {
-  formVoterLoginStateType,
-  formVoterLoginUiStateType
+  LoginVoterStateType,
+  LoginVoterUiStateType
 } from '~/types/auth/login.type'
 import type { Schema } from '~/types/validation/validation.type'
 
-type formVoterLoginPropsType = {
-  state: formVoterLoginStateType
-  uiState: formVoterLoginUiStateType
+const handleInputOTP = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  target.value = target.value.replace(/[^0-9]/g, '')
+  props.state.token = target.value
+}
+
+type LoginVoterProps = {
+  state: LoginVoterStateType
+  uiState: LoginVoterUiStateType
   schema: ZodType
   onSubmit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
 }
 
-defineProps<formVoterLoginPropsType>()
+const props = defineProps<LoginVoterProps>()
 </script>
 
 <style scoped></style>

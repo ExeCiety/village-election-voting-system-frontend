@@ -1,12 +1,10 @@
 <template>
-  <div class="w-full h-[50%] px-8 md:px-10 lg:px-20">
-    <FormVoterLogin
-      :state="state"
-      :uiState="uiState"
-      :schema="LOGIN_VOTER"
-      :onSubmit="onSubmit"
-    />
-  </div>
+  <FormVoterLogin
+    :state="state"
+    :uiState="uiState"
+    :schema="LOGIN_VOTER"
+    :onSubmit="onSubmit"
+  />
 </template>
 
 <script setup lang="ts">
@@ -28,8 +26,8 @@ const state = reactive({
 })
 
 const uiState = reactive({
-  isButtonLoading: false,
   disabledInputs: {
+    button: false,
     token: false
   },
   error: '',
@@ -38,17 +36,18 @@ const uiState = reactive({
   }
 })
 
+const toggleInputs = (status: boolean) => {
+  uiState.disabledInputs.token = status
+  uiState.disabledInputs.button = status
+}
+
 const onSubmit = async (event: FormSubmitEvent<Schema<typeof LOGIN_VOTER>>) => {
   try {
-    uiState.isButtonLoading = true
-    uiState.disabledInputs.token = true
+    toggleInputs(true)
   } catch (error) {
     // Handle error
   } finally {
-    // uiState.isButtonLoading = false
-    // uiState.disabledInputs.token = false
+    // toggleInputs(false)
   }
 }
 </script>
-
-<style scoped></style>
