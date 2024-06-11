@@ -1,5 +1,5 @@
 <template>
-  <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+  <UForm :schema="schema" :state="state" class="space-y-4" @submit="emit('onSubmit')">
     <UFormGroup size="xl" label="Token" name="token" required>
       <UInput
         v-model="state.token"
@@ -23,28 +23,27 @@
 </template>
 
 <script setup lang="ts">
+import { defineProps, defineEmits } from 'vue'
 import { ZodType } from 'zod'
-import type { FormSubmitEvent } from '#ui/types'
 import type {
-  LoginVoterStateType,
-  LoginVoterUiStateType
-} from '~/types/auth/login.type'
-import type { Schema } from '~/types/validation/validation.type'
+  FormLoginVoterState,
+  FormLoginVoterUiState
+} from '~/types/model/auth.type'
 
 const handleInputOTP = (event: Event) => {
   const target = event.target as HTMLInputElement
-  target.value = target.value.replace(/[^0-9]/g, '')
+  target.value = target.value.replace(/[^0-9]/g, '').slice(0, 8)
   props.state.token = target.value
 }
 
 type LoginVoterProps = {
-  state: LoginVoterStateType
-  uiState: LoginVoterUiStateType
+  state: FormLoginVoterState
+  uiState: FormLoginVoterUiState
   schema: ZodType
-  onSubmit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
 }
 
 const props = defineProps<LoginVoterProps>()
+const emit = defineEmits(['onSubmit'])
 </script>
 
 <style scoped></style>

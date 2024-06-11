@@ -1,9 +1,9 @@
-export type LoginOfficerState = {
+export type FormLoginOfficerState = {
   username: string
   password: string
 }
 
-export type LoginOfficerUiStateType = {
+export type FormLoginOfficerUiState = {
   showPassword: boolean
   disabledInputs: {
     button: boolean
@@ -17,11 +17,11 @@ export type LoginOfficerUiStateType = {
   }
 }
 
-export type LoginVoterStateType = {
+export type FormLoginVoterState = {
   token: string
 }
 
-export type LoginVoterUiStateType = {
+export type FormLoginVoterUiState = {
   disabledInputs: {
     button: boolean
     token: boolean

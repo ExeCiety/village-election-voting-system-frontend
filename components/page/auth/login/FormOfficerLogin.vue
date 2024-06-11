@@ -1,5 +1,5 @@
 <template>
-  <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+  <UForm :schema="schema" :state="state" class="space-y-4" @submit="emit('onSubmit')">
     <UFormGroup size="xl" label="Username" name="username" required>
       <UInput
         v-model="state.username"
@@ -25,7 +25,7 @@
             :name="
               uiState.showPassword ? 'i-heroicons-eye' : 'i-heroicons-eye-slash'
             "
-            @click="togglePasswordVisibility"
+            @click="emit('togglePasswordVisibility')"
           />
         </template>
       </UInput>
@@ -43,23 +43,21 @@
 </template>
 
 <script setup lang="ts">
+import { defineProps, defineEmits } from 'vue'
 import { ZodType } from 'zod'
-import type { FormSubmitEvent } from '#ui/types'
 import type {
-  LoginOfficerState,
-  LoginOfficerUiStateType
-} from '~/types/auth/login.type'
-import type { Schema } from '~/types/validation/validation.type'
+  FormLoginOfficerState,
+  FormLoginOfficerUiState
+} from '~/types/model/auth.type'
 
 type LoginOfficerProps = {
-  state: LoginOfficerState
-  uiState: LoginOfficerUiStateType
+  state: FormLoginOfficerState
+  uiState: FormLoginOfficerUiState
   schema: ZodType
-  onSubmit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
-  togglePasswordVisibility: () => void
 }
 
-defineProps<LoginOfficerProps>()
+const props = defineProps<LoginOfficerProps>()
+const emit = defineEmits(['togglePasswordVisibility', 'onSubmit'])
 </script>
 
 <style scoped></style>

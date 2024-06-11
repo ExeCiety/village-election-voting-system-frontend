@@ -3,13 +3,17 @@
     :state="state"
     :uiState="uiState"
     :schema="LOGIN_VOTER"
-    :onSubmit="onSubmit"
+    @onSubmit="onSubmit"
   />
 </template>
 
 <script setup lang="ts">
 import { reactive } from 'vue'
 import type { FormSubmitEvent } from '#ui/types'
+import type {
+  FormLoginVoterState,
+  FormLoginVoterUiState
+} from '~/types/model/auth.type'
 import type { Schema } from '~/types/validation/validation.type'
 import { LOGIN_VOTER } from '~/validations/auth/auth.validation'
 
@@ -21,11 +25,11 @@ definePageMeta({
   layout: 'auth'
 })
 
-const state = reactive({
+const state = reactive<FormLoginVoterState>({
   token: ''
 })
 
-const uiState = reactive({
+const uiState = reactive<FormLoginVoterUiState>({
   disabledInputs: {
     button: false,
     token: false

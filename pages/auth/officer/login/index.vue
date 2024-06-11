@@ -1,16 +1,21 @@
 <template>
   <FormOfficerLogin
-    :state="state"
-    :uiState="uiState"
+    :state="formState"
+    :uiState="formUiState"
     :schema="LOGIN_OFFICER"
     :onSubmit="onSubmit"
-    :togglePasswordVisibility="togglePasswordVisibility"
+    @togglePasswordVisibility="togglePasswordVisibility"
+    @onSubmit="onSubmit"
   />
 </template>
 
 <script setup lang="ts">
 import { reactive } from 'vue'
 import type { FormSubmitEvent } from '#ui/types'
+import type {
+  FormLoginOfficerState,
+  FormLoginOfficerUiState
+} from '~/types/model/auth.type'
 import type { Schema } from '~/types/validation/validation.type'
 import { LOGIN_OFFICER } from '~/validations/auth/auth.validation'
 
@@ -22,14 +27,13 @@ definePageMeta({
   layout: 'auth'
 })
 
-const state = reactive({
+const formState = reactive<FormLoginOfficerState>({
   username: '',
   password: ''
 })
 
-const uiState = reactive({
+const formUiState = reactive<FormLoginOfficerUiState>({
   showPassword: false,
-  isButtonLoading: false,
   disabledInputs: {
     button: false,
     username: false,
@@ -43,20 +47,20 @@ const uiState = reactive({
 })
 
 const togglePasswordVisibility = () => {
-  uiState.showPassword = !uiState.showPassword
+  formUiState.showPassword = !formUiState.showPassword
 }
 
 const toggleInputs = (status: boolean) => {
-  uiState.disabledInputs.username = status
-  uiState.disabledInputs.password = status
-  uiState.disabledInputs.button = status
+  formUiState.disabledInputs.username = status
+  formUiState.disabledInputs.password = status
+  formUiState.disabledInputs.button = status
 }
 
 const onSubmit = async (
   event: FormSubmitEvent<Schema<typeof LOGIN_OFFICER>>
 ) => {
   try {
-    uiState.showPassword = false
+    formUiState.showPassword = false
     toggleInputs(true)
   } catch (error) {
     // Handle error
