@@ -1,14 +1,40 @@
 <template>
-  <UCard
-    :ui="{
-      ring: '',
-      divide: 'divide-y divide-gray-100'
-    }"
-  >
+  <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100' }">
     <template #header>
-      <h1 class="text-2xl font-medium">Tambah Pemilih</h1>
+      <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-medium">
+          {{ props.isEdit ? 'Edit Pemilih' : 'Tambah Pemilih' }}
+        </h1>
+        <Icon
+          name="heroicons:x-mark-16-solid"
+          color="gray"
+          size="1.5rem"
+          class="cursor-pointer"
+          @click="emit('close-modal')"
+        />
+      </div>
     </template>
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+      <UFormGroup size="lg" label="Sesi Pemilihan" name="session_id" required>
+        <USelectMenu
+          class="font-medium"
+          v-model="state.session_id"
+          size="lg"
+          :options="
+            sessions.length > 0
+              ? ['-- Pilih Sesi Pemilihan --', ...sessions]
+              : []
+          "
+          :placeholder="
+            sessions.length > 0
+              ? '-- Pilih Sesi Pemilihan --'
+              : '-- Sesi Pemilihan Tidak Tersedia --'
+          "
+          value-attribute="id"
+          option-attribute="name"
+          :disabled="uiState.disabledInputs.session_id"
+        />
+      </UFormGroup>
       <UFormGroup size="lg" label="NIK" name="nik" required>
         <UInput
           v-model="state.nik"
@@ -53,13 +79,13 @@
           />
         </div>
       </UFormGroup>
-      <div class="flex items-center justify-end gap-3">
+      <div class="flex items-center justify-end gap-3 pt-36">
         <UButton
           type="button"
           color="gray"
           size="lg"
           :disabled="uiState.disabledInputs.button"
-          @click="$emit('close-modal')"
+          @click="emit('close-modal')"
           >KEMBALI</UButton
         >
         <UButton
@@ -76,13 +102,21 @@
 </template>
 
 <script setup lang="ts">
+import { defineProps, defineEmits } from 'vue'
 import { ZodType } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
-import type {
-  CreateVoterState,
-  CreateVoterUiState
-} from '~/types/model/voter.type'
+import { sessions } from '~/data/page/officer/session'
+import type { VoterState, VoterUiState } from '~/types/model/voter.type'
 import type { Schema } from '~/types/validation/validation.type'
+
+const props = defineProps<{
+  state: VoterState
+  uiState: VoterUiState
+  schema: ZodType
+  isEdit: boolean
+  onSubmit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
+}>()
+const emit = defineEmits(['close-modal'])
 
 const genderOptions = [
   {
@@ -97,16 +131,9 @@ const genderOptions = [
 
 const handleInputNik = (event: Event) => {
   const target = event.target as HTMLInputElement
-  target.value = target.value.replace(/[^0-9]/g, '')
+  target.value = target.value.replace(/[^0-9]/g, '').slice(0, 16)
   props.state.nik = target.value
 }
-
-const props = defineProps<{
-  state: CreateVoterState
-  uiState: CreateVoterUiState
-  schema: ZodType
-  onSubmit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
-}>()
 </script>
 
 <style scoped></style>

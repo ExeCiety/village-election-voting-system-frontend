@@ -7,10 +7,11 @@
     />
     <div class="main">
       <Header
-        :name="name"
-        :role="role"
-        :photo_profile_url="photoProfileUrl"
+        name="John Due"
+        role="Petugas"
+        photo_profile_url="/images/avatar/1.jpg"
         @toggle-sidebar="toggleSidebar"
+        @logout-confirm="openLogoutModal"
       >
         <template #page_title>
           <slot name="page_title"></slot>
@@ -18,49 +19,26 @@
       </Header>
       <div class="main-content">
         <slot />
+        <Footer />
       </div>
     </div>
     <div v-if="isSidebarOpen" class="faded-overlay" @click="closeSidebar"></div>
+    <ModalNotification
+      v-model="isModalLogoutConfirmationOpen"
+      type="confirm"
+      title="Apakah Anda Yakin Ingin Keluar?"
+      @close-modal="closeLogoutModal"
+      @confirm="handleLogout"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-
-const name = 'John Due'
-const role = 'Petugas'
-const photoProfileUrl = '/images/avatar/1.jpg'
-
-const sidebarMenuItems = [
-  {
-    to: '/officer/dashboard',
-    icon: 'i-heroicons-chart-pie-16-solid',
-    label: 'Dashboard'
-  },
-  {
-    to: '/officer/elections',
-    icon: 'i-heroicons-chart-bar-16-solid',
-    label: 'Data Pemilihan'
-  },
-  {
-    to: '/officer/candidates',
-    icon: 'i-heroicons-chart-bar-16-solid',
-    label: 'Data Paslon'
-  },
-  {
-    to: '/officer/voters',
-    icon: 'i-heroicons-shopping-cart',
-    label: 'Data Pemilih'
-  },
-  { to: '/officer/tps', icon: 'i-heroicons-shopping-bag', label: 'Data TPS' },
-  {
-    to: '/officer/officers',
-    icon: 'i-heroicons-presentation-chart-line-solid',
-    label: 'Data Petugas'
-  }
-]
+import { sidebarMenuItems } from '~/data/layout/sidebar'
 
 const isSidebarOpen = ref(false)
+const isModalLogoutConfirmationOpen = ref(false)
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value
@@ -68,6 +46,24 @@ const toggleSidebar = () => {
 
 const closeSidebar = () => {
   isSidebarOpen.value = false
+}
+
+const openLogoutModal = () => {
+  isModalLogoutConfirmationOpen.value = true
+}
+
+const closeLogoutModal = () => {
+  isModalLogoutConfirmationOpen.value = false
+}
+
+const handleLogout = async () => {
+  try {
+    // handle logout
+  } catch (error) {
+    // handle error
+  } finally {
+    // handle finally
+  }
 }
 </script>
 

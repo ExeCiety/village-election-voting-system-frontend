@@ -1,5 +1,5 @@
 <template>
-  <div :class="['sidebar', { 'sidebar-hidden': !isOpen }]">
+  <div :class="['sidebar', { 'sidebar-hidden': !props.isOpen }]">
     <div class="sidebar-wrapper">
       <div class="sidebar-header">
         <div class="flex items-center gap-6">
@@ -10,18 +10,18 @@
           <UIcon
             name="i-heroicons-x-mark-16-solid"
             class="text-white text-3xl cursor-pointer lg:hidden"
-            @click="$emit('close-sidebar')"
+            @click="emit('close-sidebar')"
           />
         </div>
       </div>
       <div class="sidebar-menu">
         <ul class="menu">
-          <li class="sidebar-item" v-for="item in items" :key="item.to">
+          <li class="sidebar-item" v-for="item in props.items" :key="item.to">
             <NuxtLink
               :to="item.to"
               class="sidebar-link"
               active-class="bg-customPrimary-400"
-              @click="$emit('close-sidebar')"
+              @click="emit('close-sidebar')"
             >
               <Icon class="text-2xl" :name="item.icon" />
               <span>{{ item.label }}</span>
@@ -34,12 +34,14 @@
 </template>
 
 <script setup lang="ts">
-import type { SidebarProps } from '~/types/layout/layout.type'
+import { defineProps, defineEmits } from 'vue'
+import type { SidebarMenuItems } from '~/types/layout/layout.type'
 
-defineProps<{ 
-  items: SidebarProps[]
+const props = defineProps<{
+  items: SidebarMenuItems[]
   isOpen: boolean
- }>()
+}>()
+const emit = defineEmits(['close-sidebar'])
 </script>
 
 <style scoped>

@@ -1,28 +1,33 @@
 import { z, ZodType } from 'zod'
 
-const dateRegex = /^\d{2}-\d{2}-\d{4}$/
-
-export const CREATE: ZodType = z.object({
+export const CREATE_UPDATE: ZodType = z.object({
+  session_id: z
+    .string({
+      required_error: 'Oops, nama sesi pemilihan tidak boleh kosong'
+    })
+    .min(1, {
+      message: 'Oops, nama sesi pemilihan tidak boleh kosong'
+    }),
   nik: z
     .string({
-      required_error: "Oops, NIK can' be empty"
+      required_error: 'Oops, NIK tidak boleh kosong'
     })
     .length(16, {
-      message: 'Oops, NIK must be 16 characters'
+      message: 'Oops, NIK harus 16 karakter'
     })
     .regex(/^[0-9]+$/, {
-      message: 'Oops, NIK must be a number'
+      message: 'Oops, NIK hanya boleh berisi angka'
     }),
   name: z
     .string({
-      required_error: "Oops, name can' be empty"
+      required_error: 'Oops, nama tidak boleh kosong'
     })
     .min(1, {
-      message: "Oops, name can't be empty"
+      message: 'Oops, nama tidak boleh kosong'
     }),
   birthdate: z.coerce
     .date({
-      required_error: "Oops, birthdate can' be empty"
+      required_error: 'Oops, tanggal lahir tidak boleh kosong'
     })
     .refine(
       (value) => {
@@ -35,20 +40,18 @@ export const CREATE: ZodType = z.object({
           age--
 
         return age >= 17
-      },
-      {
-        message: 'Oops, you must be at least 17 years old'
-      }
-    ),
+      }, {
+        message: 'Oops, minimal usia 17 tahun'
+      }),
   address: z
     .string({
-      required_error: "Oops, address can' be empty"
+      required_error: 'Oops, alamat tidak boleh kosong'
     })
     .min(1, {
-      message: "Oops, address can't be empty"
+      message: 'Oops, alamat tidak boleh kosong'
     }),
   gender: z.enum(['male', 'female'], {
-    required_error: 'Oops, gender cannot be empty',
-    invalid_type_error: 'Oops, gender must be either Male or Female'
+    required_error: 'Oops, Jenis kelamin tidak boleh kosong',
+    invalid_type_error: 'Oops, Jenis kelamin tidak valid'
   })
 })

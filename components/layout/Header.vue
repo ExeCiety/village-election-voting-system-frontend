@@ -6,13 +6,17 @@
           <UIcon
             name="i-heroicons-bars-3-16-solid"
             class="block text-2xl cursor-pointer lg:hidden"
-            @click="$emit('toggle-sidebar')"
+            @click="emit('toggle-sidebar')"
           />
           <h1 class="text-[#151D48] text-3xl font-semibold">
             <slot name="page_title"></slot>
           </h1>
         </div>
-        <UDropdown :items="items" :popper="{ placement: 'bottom-start' }">
+        <UDropdown
+          :ui="{ item: { size: 'text-md', padding: 'py-2 px-3' } }"
+          :items="dropdownItems"
+          :popper="{ placement: 'bottom-start' }"
+        >
           <NuxtImg :src="computedPhotoProfileUrl" class="avatar-image" />
           <div class="user-info">
             <UButton class="user-button" color="white" variant="ghost">
@@ -28,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, defineProps, defineEmits } from 'vue'
 
 type HeaderProps = {
   name: string
@@ -37,12 +41,13 @@ type HeaderProps = {
 }
 
 const props = defineProps<HeaderProps>()
+const emit = defineEmits(['toggle-sidebar', 'logout-confirm'])
 
 const computedPhotoProfileUrl = computed(
   () => props.photo_profile_url || '/images/avatar/default.jpg'
 )
 
-const items = [
+const dropdownItems = [
   [
     {
       label: 'Profile',
@@ -54,7 +59,8 @@ const items = [
   [
     {
       label: 'Logout',
-      icon: 'i-heroicons-arrow-left-start-on-rectangle-20-solid'
+      icon: 'i-heroicons-arrow-left-start-on-rectangle-20-solid',
+      click: () => emit('logout-confirm')
     }
   ]
 ]

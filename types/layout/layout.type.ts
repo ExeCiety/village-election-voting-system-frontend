@@ -1,4 +1,4 @@
-export type SidebarProps = {
+export type SidebarMenuItems = {
   to: string
   icon: string
   label: string
