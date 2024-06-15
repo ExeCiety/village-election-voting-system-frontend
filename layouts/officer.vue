@@ -3,15 +3,15 @@
     <Sidebar
       :items="sidebarMenuItems"
       :is-open="isSidebarOpen"
-      @close-sidebar="closeSidebar"
+      @closeSidebar="closeSidebar"
     />
     <div class="main">
       <Header
         name="John Due"
         role="Petugas"
         photo_profile_url="/images/avatar/1.jpg"
-        @toggle-sidebar="toggleSidebar"
-        @logout-confirm="openLogoutModal"
+        @toggleSidebar="toggleSidebar"
+        @confirmLogout="openLogoutModal"
       >
         <template #page_title>
           <slot name="page_title"></slot>
@@ -27,7 +27,7 @@
       v-model="isModalLogoutConfirmationOpen"
       type="confirm"
       title="Apakah Anda Yakin Ingin Keluar?"
-      @close-modal="closeLogoutModal"
+      @closeModal="closeLogoutModal"
       @confirm="handleLogout"
     />
   </div>
@@ -35,7 +35,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { sidebarMenuItems } from '~/data/layout/sidebar'
+
+const router = useRouter()
 
 const isSidebarOpen = ref(false)
 const isModalLogoutConfirmationOpen = ref(false)
@@ -59,6 +62,7 @@ const closeLogoutModal = () => {
 const handleLogout = async () => {
   try {
     // handle logout
+    router.push('/')
   } catch (error) {
     // handle error
   } finally {

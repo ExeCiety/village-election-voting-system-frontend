@@ -1,6 +1,6 @@
 import type { Session } from './session.type'
 
-export type VoterResponse = {
+export type Voter = {
   id: string
   nik: string
   name: string
@@ -9,7 +9,6 @@ export type VoterResponse = {
   gender: 'male' | 'female'
   otp: string
   otp_status: boolean
-  session: Session
 }
 
 export type VoterState = {
@@ -40,4 +39,8 @@ export type VoterUiState = {
     address: string
     gender: string
   }
+}
+
+export type VoterResponse = Voter & {
+  session: Session
 }

@@ -4,3 +4,8 @@ export type TableColumns = {
   sortable?: boolean
   direction?: 'asc' | 'desc'
 }
+
+export type TableProps = {
+  data: any[]
+  columns: TableColumns[]
+}

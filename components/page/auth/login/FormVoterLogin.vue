@@ -1,12 +1,12 @@
 <template>
-  <UForm :schema="schema" :state="state" class="space-y-4" @submit="emit('onSubmit')">
+  <UForm :schema="props.schema" :state="props.state" class="space-y-4" @submit="props.submit">
     <UFormGroup size="xl" label="Token" name="token" required>
       <UInput
-        v-model="state.token"
+        v-model="props.state.token"
         input-class="py-5 ps-6 rounded-xl"
         size="lg"
         placeholder="Masukan Token"
-        :disabled="uiState.disabledInputs.token"
+        :disabled="props.uiState.disabledInputs.token"
         @input="handleInputOTP"
       />
     </UFormGroup>
@@ -15,7 +15,7 @@
       type="submit"
       size="lg"
       block
-      :loading="uiState.disabledInputs.button"
+      :loading="props.uiState.disabledInputs.button"
     >
       Masuk
     </UButton>
@@ -23,8 +23,9 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
 import { ZodType } from 'zod'
+import type { FormSubmitEvent } from '#ui/types'
+import type { Schema } from '~/types/validation/validation.type'
 import type {
   FormLoginVoterState,
   FormLoginVoterUiState
@@ -40,10 +41,8 @@ type LoginVoterProps = {
   state: FormLoginVoterState
   uiState: FormLoginVoterUiState
   schema: ZodType
+  submit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
 }
 
 const props = defineProps<LoginVoterProps>()
-const emit = defineEmits(['onSubmit'])
 </script>
-
-<style scoped></style>
