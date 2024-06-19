@@ -1,0 +1,79 @@
+<template>
+  <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100' }">
+    <template #header>
+      <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-medium">
+          {{ props.isEdit ? 'Edit Sesi Pemilihan' : 'Tambah Sesi Pemilihan' }}
+        </h1>
+        <Icon
+          name="heroicons:x-mark-16-solid"
+          color="gray"
+          size="1.5rem"
+          class="cursor-pointer"
+          @click="emit('closeModal')"
+        />
+      </div>
+    </template>
+    <UForm :schema="props.schema" :state="props.state" class="space-y-4" @submit="props.submit">
+      <UFormGroup size="lg" label="Sesi Pemilihan" name="name" required>
+        <UInput
+          v-model="props.state.name"
+          size="lg"
+          placeholder="Masukan Nama Sesi Pemilihan"
+          :disabled="props.uiState.disabledInputs.name"
+        />
+      </UFormGroup>
+      <UFormGroup size="lg" label="Waktu Mulai" name="start" required>
+        <UInput
+          type="datetime-local"
+          v-model="props.state.start"
+          size="lg"
+          :disabled="props.uiState.disabledInputs.start"
+        />
+      </UFormGroup>
+      <UFormGroup size="lg" label="Waktu Selesai" name="end" required>
+        <UInput
+          type="datetime-local"
+          v-model="props.state.end"
+          size="lg"
+          :disabled="props.uiState.disabledInputs.end"
+        />
+      </UFormGroup>
+      <div class="flex items-center justify-end gap-3 pt-36">
+        <UButton
+          type="button"
+          color="gray"
+          size="lg"
+          :disabled="props.uiState.disabledInputs.button"
+          @click="emit('closeModal')"
+          >KEMBALI</UButton
+        >
+        <UButton
+          type="submit"
+          color="blue"
+          size="lg"
+          :loading="props.uiState.disabledInputs.button"
+        >
+          SIMPAN
+        </UButton>
+      </div>
+    </UForm>
+  </UCard>
+</template>
+
+<script setup lang="ts">
+import { ZodType } from 'zod'
+import type { FormSubmitEvent } from '#ui/types'
+import type { Schema } from '~/types/validation/validation.type'
+import type { SessionState, SessionUiState } from '~/types/model/session.type'
+
+const props = defineProps<{
+  state: SessionState
+  uiState: SessionUiState
+  schema: ZodType
+  isEdit: boolean
+  submit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
+}>()
+
+const emit = defineEmits(['closeModal'])
+</script>

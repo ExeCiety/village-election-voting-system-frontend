@@ -1,17 +1,6 @@
 <template>
   <UTable :rows="props.data" :columns="props.columns">
     <template #no-data="{ row }">{{ row.no }}</template>
-    <template #session_name-data="{ row }">
-      {{ row.session.name }}
-    </template>
-    <template #otp_status-data="{ row }">
-      <span
-        class="text-white font-medium px-3 py-2 rounded-full"
-        :class="row.otp_status ? 'bg-blue-500' : 'bg-red-500'"
-      >
-        {{ row.otp_status ? 'Available' : 'Not Available' }}
-      </span>
-    </template>
     <template #action-data="{ row }">
       <UDropdown
         :ui="{ item: { padding: 'py-2 px-3' } }"
@@ -32,7 +21,7 @@
 
 <script setup lang="ts">
 import type { TableColumns } from '~/types/model/table.type'
-import type { VoterResponse } from '~/types/model/voter.type'
+import type { Session } from '~/types/model/session.type'
 
 type TableProps = {
   data: any[]
@@ -42,13 +31,8 @@ type TableProps = {
 const props = defineProps<TableProps>()
 const emit = defineEmits(['edit', 'delete'])
 
-const dropdownItems = (row: VoterResponse) => [
+const dropdownItems = (row: Session) => [
   [
-    {
-      label: 'Generate OTP',
-      icon: 'i-heroicons-arrow-path',
-      click: () => console.log('Generate OTP: ', row.id)
-    },
     {
       label: 'Edit',
       icon: 'i-heroicons-pencil-square-20-solid',

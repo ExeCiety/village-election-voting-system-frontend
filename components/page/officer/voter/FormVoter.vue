@@ -10,15 +10,15 @@
           color="gray"
           size="1.5rem"
           class="cursor-pointer"
-          @click="emit('close-modal')"
+          @click="emit('closeModal')"
         />
       </div>
     </template>
-    <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+    <UForm :schema="props.schema" :state="props.state" class="space-y-4" @submit="props.submit">
       <UFormGroup size="lg" label="Sesi Pemilihan" name="session_id" required>
         <USelectMenu
           class="font-medium"
-          v-model="state.session_id"
+          v-model="props.state.session_id"
           size="lg"
           :options="
             sessions.length > 0
@@ -32,40 +32,40 @@
           "
           value-attribute="id"
           option-attribute="name"
-          :disabled="uiState.disabledInputs.session_id"
+          :disabled="props.uiState.disabledInputs.session_id"
         />
       </UFormGroup>
       <UFormGroup size="lg" label="NIK" name="nik" required>
         <UInput
-          v-model="state.nik"
+          v-model="props.state.nik"
           size="lg"
           placeholder="Masukan NIK"
-          :disabled="uiState.disabledInputs.nik"
+          :disabled="props.uiState.disabledInputs.nik"
           @input="handleInputNik"
         />
       </UFormGroup>
       <UFormGroup size="lg" label="Nama" name="name" required>
         <UInput
-          v-model="state.name"
+          v-model="props.state.name"
           size="lg"
           placeholder="Masukan Nama"
-          :disabled="uiState.disabledInputs.name"
+          :disabled="props.uiState.disabledInputs.name"
         />
       </UFormGroup>
       <UFormGroup size="lg" label="Tanggal Lahir" name="birthdate" required>
         <UInput
           type="date"
-          v-model="state.birthdate"
+          v-model="props.state.birthdate"
           size="lg"
-          :disabled="uiState.disabledInputs.birthdate"
+          :disabled="props.uiState.disabledInputs.birthdate"
         />
       </UFormGroup>
       <UFormGroup size="lg" label="Alamat" name="address" required>
         <UInput
-          v-model="state.address"
+          v-model="props.state.address"
           size="lg"
           placeholder="Masukan Alamat"
-          :disabled="uiState.disabledInputs.address"
+          :disabled="props.uiState.disabledInputs.address"
         />
       </UFormGroup>
       <UFormGroup size="lg" label="Jenis Kelamin" name="gender" required>
@@ -73,9 +73,9 @@
           <URadio
             v-for="gender of genderOptions"
             :key="gender.value"
-            v-model="state.gender"
+            v-model="props.state.gender"
             v-bind="gender"
-            :disabled="uiState.disabledInputs.gender"
+            :disabled="props.uiState.disabledInputs.gender"
           />
         </div>
       </UFormGroup>
@@ -84,15 +84,15 @@
           type="button"
           color="gray"
           size="lg"
-          :disabled="uiState.disabledInputs.button"
-          @click="emit('close-modal')"
+          :disabled="props.uiState.disabledInputs.button"
+          @click="emit('closeModal')"
           >KEMBALI</UButton
         >
         <UButton
           type="submit"
           color="blue"
           size="lg"
-          :loading="uiState.disabledInputs.button"
+          :loading="props.uiState.disabledInputs.button"
         >
           SIMPAN
         </UButton>
@@ -102,21 +102,20 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
 import { ZodType } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
-import { sessions } from '~/data/page/officer/session'
 import type { VoterState, VoterUiState } from '~/types/model/voter.type'
 import type { Schema } from '~/types/validation/validation.type'
+import { sessions } from '~/data/page/officer/session'
 
 const props = defineProps<{
   state: VoterState
   uiState: VoterUiState
   schema: ZodType
   isEdit: boolean
-  onSubmit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
+  submit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
 }>()
-const emit = defineEmits(['close-modal'])
+const emit = defineEmits(['closeModal'])
 
 const genderOptions = [
   {
@@ -135,5 +134,3 @@ const handleInputNik = (event: Event) => {
   props.state.nik = target.value
 }
 </script>
-
-<style scoped></style>

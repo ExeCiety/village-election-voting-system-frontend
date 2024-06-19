@@ -4,8 +4,8 @@
     :uiState="formUiState"
     :schema="LOGIN_OFFICER"
     :onSubmit="onSubmit"
+    :submit="onSubmit"
     @togglePasswordVisibility="togglePasswordVisibility"
-    @onSubmit="onSubmit"
   />
 </template>
 
