@@ -27,7 +27,7 @@
     <ModalNotification
       v-model="isModalBulkDeleteConfirmationOpen"
       type="confirm"
-      :title="`Apakah Anda Yakin ingin menghapus ${selectedTableItems.length} data ini?`"
+      :title="`Apakah Anda Yakin ingin menghapus ${selectedTableItems.length} data pemilih ini?`"
       :button_confirm_loading="uiFormState.disabledInputs.button"
       @closeModal="closeModalDeleteBulkConfirmation"
       @confirm="onDeleteBulk"
@@ -88,7 +88,7 @@
               color="primary"
               variant="outline"
               icon="i-heroicons-plus-20-solid"
-              @click="openModalCreate"
+              @click="openModalFormCreate"
             >
               Tambah
             </UButton>
@@ -109,7 +109,7 @@
           v-model="selectedTableItems"
           :data="filtered.data"
           :columns="columns"
-          @edit="openModalEdit"
+          @edit="openModalFormEdit"
           @delete="openModalDeleteConfirmation"
         />
         <div
@@ -145,10 +145,10 @@ import type { Schema } from '~/types/validation/validation.type'
 import type {
   Voter,
   VoterResponse,
-  VoterState,
-  VoterUiState
+  FormState as VoterFormState,
+  FormUiState as VoterFormUiState
 } from '~/types/model/voter.type'
-import { CREATE_UPDATE } from '~/validations/officer/voter/voter.validation'
+import { CREATE_UPDATE } from '~/validations/officer/voter.validation'
 
 useHead({
   title: 'E-Voting - Pemilih'
@@ -173,7 +173,7 @@ const isButtonDeleteDisabled = computed(
   () => selectedTableItems.value.length === 0
 )
 
-const formState = reactive<VoterState>({
+const formState = reactive<VoterFormState>({
   session_id: '',
   nik: '',
   name: '',
@@ -182,7 +182,7 @@ const formState = reactive<VoterState>({
   gender: 'male'
 })
 
-const uiFormState = reactive<VoterUiState>({
+const uiFormState = reactive<VoterFormUiState>({
   disabledInputs: {
     button: false,
     session_id: false,
@@ -224,13 +224,13 @@ const resetFormState = () => {
   })
 }
 
-const openModalCreate = () => {
+const openModalFormCreate = () => {
   resetFormState()
   isEdit.value = false
   isModalFormOpen.value = true
 }
 
-const openModalEdit = (id: Voter['id']) => {
+const openModalFormEdit = (id: Voter['id']) => {
   const voter = voters.find((voter) => voter.id === id)
 
   if (!voter) {
@@ -248,6 +248,7 @@ const openModalEdit = (id: Voter['id']) => {
     address: voter!.address,
     gender: voter!.gender
   })
+
   isEdit.value = true
   isModalFormOpen.value = true
 }
@@ -425,13 +426,11 @@ const onDeleteBulk = async () => {
     isModalErrorOpen.value = true
     console.error(JSON.stringify(error))
   } finally {
-    selectedTableItems.value = []
     uiFormState.disabledInputs.button = false
     closeModalDeleteBulkConfirmation()
-    modalSuccessMessage.value = `Data pemilih berhasil dihapus`
+    modalSuccessMessage.value = `Data pemilih berhasil dihapus sebanyak ${selectedTableItems.value.length} data`
     isModalSuccessOpen.value = true
+    selectedTableItems.value = []
   }
 }
 </script>
-
-<style scoped></style>

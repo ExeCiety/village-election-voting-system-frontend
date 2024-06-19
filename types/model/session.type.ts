@@ -5,13 +5,13 @@ export type Session = {
   end: string
 }
 
-export type SessionState = {
+export type FormState = {
   name: string
   start: string
   end: string
 }
 
-export type SessionUiState = {
+export type FormUiState = {
   disabledInputs: {
     button: boolean
     name: boolean

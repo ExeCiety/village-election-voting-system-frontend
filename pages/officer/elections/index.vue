@@ -27,7 +27,7 @@
     <ModalNotification
       v-model="isModalDeleteBulkConfirmationOpen"
       type="confirm"
-      :title="`Apakah Anda Yakin ingin menghapus ${selectedTableItems.length} data ini?`"
+      :title="`Apakah Anda Yakin ingin menghapus ${selectedTableItems.length} data sesi ini?`"
       :button_confirm_loading="uiFormState.disabledInputs.button"
       @closeModal="closeModalDeleteBulkConfirmation"
       @confirm="onDeleteBulk"
@@ -122,14 +122,13 @@
 import { reactive, ref, computed, watch } from 'vue'
 import type { FormSubmitEvent } from '#ui/types'
 import { columns, sessions } from '~/data/page/officer/session'
-import type { Session } from '~/types/model/session.type'
-import type { SessionState } from '~/types/model/session.type'
-import type { SessionUiState } from '~/types/model/session.type'
+import type {
+  Session,
+  FormState as SessionFormState,
+  FormUiState as SessionFormUiState
+} from '~/types/model/session.type'
 import type { Schema } from '~/types/validation/validation.type'
-import {
-  CREATE,
-  UPDATE
-} from '~/validations/officer/session/session.validation'
+import { CREATE, UPDATE } from '~/validations/officer/session.validation'
 
 useHead({
   title: 'E-Voting - Pemilihan'
@@ -152,13 +151,13 @@ const isButtonDeleteDisabled = computed(
   () => selectedTableItems.value.length === 0
 )
 
-const formState = reactive<SessionState>({
+const formState = reactive<SessionFormState>({
   name: '',
   start: '',
   end: ''
 })
 
-const uiFormState = reactive<SessionUiState>({
+const uiFormState = reactive<SessionFormUiState>({
   disabledInputs: {
     button: false,
     name: false,
@@ -354,13 +353,11 @@ const onDeleteBulk = async () => {
     isModalErrorOpen.value = true
     console.error(JSON.stringify(error))
   } finally {
-    selectedTableItems.value = []
     uiFormState.disabledInputs.button = false
     closeModalDeleteBulkConfirmation()
-    modalSuccessMessage.value = `Data sesi pemilihan berhasil dihapus`
+    modalSuccessMessage.value = `Data sesi pemilihan berhasil dihapus sebanyak ${selectedTableItems.value.length} data`
     isModalSuccessOpen.value = true
+    selectedTableItems.value = []
   }
 }
 </script>
-
-<style scoped></style>

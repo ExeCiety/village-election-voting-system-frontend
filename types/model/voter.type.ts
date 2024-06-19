@@ -11,7 +11,11 @@ export type Voter = {
   otp_status: boolean
 }
 
-export type VoterState = {
+export type VoterResponse = Voter & {
+  session: Session
+}
+
+export type FormState = {
   session_id: string
   nik: string
   name: string
@@ -20,7 +24,7 @@ export type VoterState = {
   gender: string
 }
 
-export type VoterUiState = {
+export type FormUiState = {
   disabledInputs: {
     button: boolean
     session_id: boolean
@@ -39,8 +43,4 @@ export type VoterUiState = {
     address: string
     gender: string
   }
-}
-
-export type VoterResponse = Voter & {
-  session: Session
 }
