@@ -1,16 +1,10 @@
 <template>
   <div class="app">
-    <Sidebar
-      :items="sidebarMenuItems"
-      :is-open="isSidebarOpen"
-      @closeSidebar="closeSidebar"
-    />
     <div class="main">
       <Header
-        name="John Due"
-        role="Petugas"
-        photo_profile_url="/images/avatar/1.jpg"
-        @toggleSidebar="toggleSidebar"
+        name="Elon Musk"
+        role="Pemilih"
+        photo_profile_url="/images/avatar/2.jpg"
         @confirmLogout="openLogoutModal"
       >
         <template #page_title>
@@ -19,10 +13,8 @@
       </Header>
       <div class="main-content">
         <slot />
-        <Footer />
       </div>
     </div>
-    <div v-if="isSidebarOpen" class="faded-overlay" @click="closeSidebar"></div>
     <ModalNotification
       v-model="isModalLogoutConfirmationOpen"
       type="confirm"
@@ -36,20 +28,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { sidebarMenuItems } from '~/data/layout/sidebar'
 
 const router = useRouter()
-
-const isSidebarOpen = ref(false)
 const isModalLogoutConfirmationOpen = ref(false)
-
-const toggleSidebar = () => {
-  isSidebarOpen.value = !isSidebarOpen.value
-}
-
-const closeSidebar = () => {
-  isSidebarOpen.value = false
-}
 
 const openLogoutModal = () => {
   isModalLogoutConfirmationOpen.value = true
@@ -62,7 +43,7 @@ const closeLogoutModal = () => {
 const handleLogout = async () => {
   try {
     // handle logout
-    router.push('/auth/officer/login')
+    router.push('/auth/voter/login')
   } catch (error) {
     // handle error
   } finally {
@@ -77,14 +58,10 @@ const handleLogout = async () => {
 }
 
 .main {
-  @apply relative z-10 transition-all ms-0 lg:ms-[350px];
+  @apply relative z-10 mt-[100px];
 }
 
 .main-content {
   @apply p-4 lg:p-10;
-}
-
-.faded-overlay {
-  @apply fixed inset-0 bg-black bg-opacity-50 z-20 transition-opacity duration-300 ease-in-out;
 }
 </style>

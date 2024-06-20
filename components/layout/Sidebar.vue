@@ -38,10 +38,12 @@
 <script setup lang="ts">
 import type { SidebarMenuItems } from '~/types/layout/layout.type'
 
-const props = defineProps<{
+type SidebarProps = {
   items: SidebarMenuItems[]
   isOpen: boolean
-}>()
+}
+
+const props = defineProps<SidebarProps>()
 const emit = defineEmits(['closeSidebar'])
 </script>
 

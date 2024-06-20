@@ -1,7 +1,7 @@
 import type { TableColumns } from '~/types/model/table.type'
 import type { CandidateResponse } from '~/types/model/candidate.type'
 
-export const columns: TableColumns[] = [
+export const tableColumns: TableColumns[] = [
   {
     key: 'serial_number',
     label: 'Nomor Urut',

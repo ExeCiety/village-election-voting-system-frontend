@@ -108,7 +108,7 @@
         <TableVoter
           v-model="selectedTableItems"
           :data="filtered.data"
-          :columns="columns"
+          :columns="tableColumns"
           @edit="openModalFormEdit"
           @delete="openModalDeleteConfirmation"
         />
@@ -139,8 +139,8 @@
 <script setup lang="ts">
 import { reactive, ref, computed, watch } from 'vue'
 import type { FormSubmitEvent } from '#ui/types'
-import { columns, voters } from '~/data/page/officer/voter'
-import { sessions } from '~/data/page/officer/session'
+import { tableColumns, voters } from '~/data/model/voter'
+import { sessions } from '~/data/model/session'
 import type { Schema } from '~/types/validation/validation.type'
 import type {
   Voter,
@@ -179,7 +179,7 @@ const formState = reactive<VoterFormState>({
   name: '',
   birthdate: '',
   address: '',
-  gender: 'male'
+  gender: ''
 })
 
 const uiFormState = reactive<VoterFormUiState>({
