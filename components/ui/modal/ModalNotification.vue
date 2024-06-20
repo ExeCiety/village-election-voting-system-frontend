@@ -21,11 +21,11 @@
         >
           <UButton
             class="font-bold mt-4 mb-2"
-            :class="{ hidden: props.buttonConfirmLoading }"
+            :class="{ hidden: props.button_confirm_loading }"
             color="gray"
             variant="outline"
             size="lg"
-            @click="emit('close-modal')"
+            @click="emit('closeModal')"
           >
             Kembali
           </UButton>
@@ -34,10 +34,10 @@
             color="primary"
             variant="outline"
             size="lg"
-            :loading="props.buttonConfirmLoading"
+            :loading="props.button_confirm_loading"
             @click="emit('confirm')"
           >
-            {{ props.buttonConfirmLoading ? 'Memproses...' : 'Ya' }}
+            {{ props.button_confirm_loading ? 'Memproses...' : 'Ya' }}
           </UButton>
         </div>
         <UButton
@@ -45,7 +45,7 @@
           class="font-bold mt-4 mb-2"
           :color="buttonColor"
           size="lg"
-          @click="emit('close-modal')"
+          @click="emit('closeModal')"
         >
           OK
         </UButton>
@@ -55,17 +55,17 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, computed } from 'vue'
+import { computed } from 'vue'
 
 type ModalProps = {
   type: 'success' | 'warning' | 'error' | 'confirm'
   title: string
   message?: string
-  buttonConfirmLoading?: boolean
+  button_confirm_loading?: boolean
 }
 
 const props = defineProps<ModalProps>()
-const emit = defineEmits(['close-modal', 'loading', 'confirm'])
+const emit = defineEmits(['closeModal', 'loading', 'confirm'])
 
 const iconName = computed(() => {
   switch (props.type) {
@@ -123,5 +123,3 @@ const buttonColor = computed(() => {
   }
 })
 </script>
-
-<style scoped></style>
