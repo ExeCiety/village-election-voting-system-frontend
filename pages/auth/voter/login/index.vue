@@ -3,7 +3,7 @@
     :state="state"
     :uiState="uiState"
     :schema="LOGIN_VOTER"
-    @onSubmit="onSubmit"
+    :submit="onSubmit"
   />
 </template>
 

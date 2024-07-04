@@ -1,6 +1,6 @@
 import type { Session } from './session.type'
 
-export type VoterResponse = {
+export type Voter = {
   id: string
   nik: string
   name: string
@@ -9,10 +9,13 @@ export type VoterResponse = {
   gender: 'male' | 'female'
   otp: string
   otp_status: boolean
+}
+
+export type VoterResponse = Voter & {
   session: Session
 }
 
-export type VoterState = {
+export type FormState = {
   session_id: string
   nik: string
   name: string
@@ -21,7 +24,7 @@ export type VoterState = {
   gender: string
 }
 
-export type VoterUiState = {
+export type FormUiState = {
   disabledInputs: {
     button: boolean
     session_id: boolean

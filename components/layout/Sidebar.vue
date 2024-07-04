@@ -2,15 +2,17 @@
   <div :class="['sidebar', { 'sidebar-hidden': !props.isOpen }]">
     <div class="sidebar-wrapper">
       <div class="sidebar-header">
-        <div class="flex items-center gap-6">
-          <div class="logo">
-            <NuxtImg src="/favicon.png" width="26px" />
-          </div>
-          <div class="title">e Voting</div>
+        <div class="flex items-center justify-between">
+          <NuxtLink class="flex items-center gap-6" to="/officer/dashboard">
+            <div class="logo">
+              <NuxtImg src="/favicon.png" width="26px" />
+            </div>
+            <div class="title">e Voting</div>
+          </NuxtLink>
           <UIcon
             name="i-heroicons-x-mark-16-solid"
             class="text-white text-3xl cursor-pointer lg:hidden"
-            @click="emit('close-sidebar')"
+            @click="emit('closeSidebar')"
           />
         </div>
       </div>
@@ -21,7 +23,7 @@
               :to="item.to"
               class="sidebar-link"
               active-class="bg-customPrimary-400"
-              @click="emit('close-sidebar')"
+              @click="emit('closeSidebar')"
             >
               <Icon class="text-2xl" :name="item.icon" />
               <span>{{ item.label }}</span>
@@ -34,14 +36,13 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
 import type { SidebarMenuItems } from '~/types/layout/layout.type'
 
 const props = defineProps<{
   items: SidebarMenuItems[]
   isOpen: boolean
 }>()
-const emit = defineEmits(['close-sidebar'])
+const emit = defineEmits(['closeSidebar'])
 </script>
 
 <style scoped>

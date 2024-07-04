@@ -1,29 +1,29 @@
 <template>
-  <UForm :schema="schema" :state="state" class="space-y-4" @submit="emit('onSubmit')">
+  <UForm :schema="props.schema" :state="props.state" class="space-y-4" @submit="props.submit">
     <UFormGroup size="xl" label="Username" name="username" required>
       <UInput
-        v-model="state.username"
+        v-model="props.state.username"
         input-class="py-5 ps-6 rounded-xl"
         size="lg"
         placeholder="Masukan Username"
-        :disabled="uiState.disabledInputs.username"
+        :disabled="props.uiState.disabledInputs.username"
       />
     </UFormGroup>
     <UFormGroup size="xl" label="Password" name="password" required>
       <UInput
-        v-model="state.password"
+        v-model="props.state.password"
         input-class="py-5 ps-6 rounded-xl"
         size="lg"
-        :type="uiState.showPassword ? 'text' : 'password'"
+        :type="props.uiState.showPassword ? 'text' : 'password'"
         placeholder="Masukan Password"
         :ui="{ icon: { trailing: { pointer: '' } } }"
-        :disabled="uiState.disabledInputs.password"
+        :disabled="props.uiState.disabledInputs.password"
       >
         <template #trailing>
           <UIcon
             class="text-xl text-[#BBBFC5] cursor-pointer"
             :name="
-              uiState.showPassword ? 'i-heroicons-eye' : 'i-heroicons-eye-slash'
+              props.uiState.showPassword ? 'i-heroicons-eye' : 'i-heroicons-eye-slash'
             "
             @click="emit('togglePasswordVisibility')"
           />
@@ -35,7 +35,7 @@
       type="submit"
       size="lg"
       block
-      :loading="uiState.disabledInputs.button"
+      :loading="props.uiState.disabledInputs.button"
     >
       Masuk
     </UButton>
@@ -43,8 +43,9 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
 import { ZodType } from 'zod'
+import type { FormSubmitEvent } from '#ui/types'
+import type { Schema } from '~/types/validation/validation.type'
 import type {
   FormLoginOfficerState,
   FormLoginOfficerUiState
@@ -54,10 +55,9 @@ type LoginOfficerProps = {
   state: FormLoginOfficerState
   uiState: FormLoginOfficerUiState
   schema: ZodType
+  submit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
 }
 
 const props = defineProps<LoginOfficerProps>()
-const emit = defineEmits(['togglePasswordVisibility', 'onSubmit'])
+const emit = defineEmits(['togglePasswordVisibility'])
 </script>
-
-<style scoped></style>
