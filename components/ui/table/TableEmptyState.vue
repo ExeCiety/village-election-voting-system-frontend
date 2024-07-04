@@ -11,5 +11,9 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ message?: string }>()
+type TableEmptyStateProps = {
+  message?: string
+}
+
+const props = defineProps<TableEmptyStateProps>()
 </script>

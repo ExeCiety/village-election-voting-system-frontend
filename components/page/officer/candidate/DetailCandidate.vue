@@ -31,7 +31,11 @@
 <script setup lang="ts">
 import type { DetailState as CandidateDetailState } from '~/types/model/candidate.type'
 
-const props = defineProps<{ state: CandidateDetailState }>()
+type DetailCandidateProps = {
+  state: CandidateDetailState
+}
+
+const props = defineProps<DetailCandidateProps>()
 const emit = defineEmits(['closeModal'])
 </script>
 

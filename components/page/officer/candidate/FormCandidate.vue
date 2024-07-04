@@ -124,17 +124,19 @@ import type {
   FormUiState as CandidateFormUiState
 } from '~/types/model/candidate.type'
 import type { Schema } from '~/types/validation/validation.type'
-import { sessions } from '~/data/page/officer/session'
+import { sessions } from '~/data/model/session'
 
 const photoPreview = ref<string | null>(null)
 
-const props = defineProps<{
+type FormCandidateProps = {
   state: CandidateFormState
   uiState: CandidateFormUiState
   schema: ZodType
   isEdit: boolean
   submit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
-}>()
+}
+
+const props = defineProps<FormCandidateProps>()
 const emit = defineEmits(['closeModal'])
 
 const handleInputSerialNumber = (event: Event) => {

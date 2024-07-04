@@ -1,7 +1,7 @@
 import type { TableColumns } from '~/types/model/table.type'
 import type { VoterResponse } from '~/types/model/voter.type'
 
-export const columns: TableColumns[] = [
+export const tableColumns: TableColumns[] = [
   {
     key: 'no',
     label: 'No',

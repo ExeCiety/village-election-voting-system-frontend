@@ -90,7 +90,7 @@
         <TableSession
           v-model="selectedTableItems"
           :data="filtered.data"
-          :columns="columns"
+          :columns="tableColumns"
           @edit="openModalFormEdit"
           @delete="openModalDeleteConfirmation"
         />
@@ -121,7 +121,7 @@
 <script setup lang="ts">
 import { reactive, ref, computed, watch } from 'vue'
 import type { FormSubmitEvent } from '#ui/types'
-import { columns, sessions } from '~/data/page/officer/session'
+import { tableColumns, sessions } from '~/data/model/session'
 import type {
   Session,
   FormState as SessionFormState,

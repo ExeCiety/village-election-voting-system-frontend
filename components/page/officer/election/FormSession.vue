@@ -14,7 +14,12 @@
         />
       </div>
     </template>
-    <UForm :schema="props.schema" :state="props.state" class="space-y-4" @submit="props.submit">
+    <UForm
+      :schema="props.schema"
+      :state="props.state"
+      class="space-y-4"
+      @submit="props.submit"
+    >
       <UFormGroup size="lg" label="Sesi Pemilihan" name="name" required>
         <UInput
           v-model="props.state.name"
@@ -65,15 +70,20 @@
 import { ZodType } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 import type { Schema } from '~/types/validation/validation.type'
-import type { SessionState, SessionUiState } from '~/types/model/session.type'
+import type {
+  FormState as SessionFormState,
+  FormUiState as SessionFormUiState
+} from '~/types/model/session.type'
 
-const props = defineProps<{
-  state: SessionState
-  uiState: SessionUiState
+type FormSessionProps = {
+  state: SessionFormState
+  uiState: SessionFormUiState
   schema: ZodType
   isEdit: boolean
   submit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
-}>()
+}
+
+const props = defineProps<FormSessionProps>()
 
 const emit = defineEmits(['closeModal'])
 </script>

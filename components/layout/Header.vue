@@ -1,9 +1,13 @@
 <template>
-  <header class="mb-3">
+  <header
+    :class="{ 'fixed w-full top-0 z-20': props.role === 'Pemilih' }"
+    class="mb-3"
+  >
     <nav class="navbar">
       <div class="container-fluid">
         <div class="flex items-center gap-6 ps-3">
           <UIcon
+            v-if="props.role === 'Petugas'"
             name="i-heroicons-bars-3-16-solid"
             class="block text-2xl cursor-pointer lg:hidden"
             @click="emit('toggleSidebar')"
@@ -67,6 +71,10 @@ const dropdownItems = [
 </script>
 
 <style scoped>
+header {
+  @apply mb-3;
+}
+
 header .navbar {
   @apply bg-white relative z-10 flex items-center justify-start flex-nowrap;
 }

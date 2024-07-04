@@ -14,7 +14,12 @@
         />
       </div>
     </template>
-    <UForm :schema="props.schema" :state="props.state" class="space-y-4" @submit="props.submit">
+    <UForm
+      :schema="props.schema"
+      :state="props.state"
+      class="space-y-4"
+      @submit="props.submit"
+    >
       <UFormGroup size="lg" label="Sesi Pemilihan" name="session_id" required>
         <USelectMenu
           class="font-medium"
@@ -104,17 +109,22 @@
 <script setup lang="ts">
 import { ZodType } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
-import type { VoterState, VoterUiState } from '~/types/model/voter.type'
+import type {
+  FormState as VoterFormState,
+  FormUiState as VoterFormUiState
+} from '~/types/model/voter.type'
 import type { Schema } from '~/types/validation/validation.type'
-import { sessions } from '~/data/page/officer/session'
+import { sessions } from '~/data/model/session'
 
-const props = defineProps<{
-  state: VoterState
-  uiState: VoterUiState
+type FormVoterProps = {
+  state: VoterFormState
+  uiState: VoterFormUiState
   schema: ZodType
   isEdit: boolean
   submit: (event: FormSubmitEvent<Schema<ZodType>>) => Promise<void>
-}>()
+}
+
+const props = defineProps<FormVoterProps>()
 const emit = defineEmits(['closeModal'])
 
 const genderOptions = [

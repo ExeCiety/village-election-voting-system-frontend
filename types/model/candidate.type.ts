@@ -51,3 +51,16 @@ export type DetailState = {
   description: string
   photo_url: string
 }
+
+
+export type VoteCandidateState = {
+  candidate_id: string
+}
+
+export type VoteCandidateUiState = {
+  disabledInputs: {
+    button: boolean
+    candidate_id: boolean
+  }
+  error: string
+}
