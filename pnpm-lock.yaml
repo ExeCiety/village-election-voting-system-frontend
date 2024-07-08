@@ -14,15 +14,30 @@ importers:
       '@nuxt/ui':
         specifier: ^2.16.0
         version: 2.16.0(focus-trap@7.5.4)(nuxt@3.11.1(@parcel/watcher@2.4.1)(@types/node@20.12.4)(@unocss/reset@0.58.9)(encoding@0.1.13)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.14.0))(vue@3.4.21))(fuse.js@6.6.2)(ioredis@5.3.2)(rollup@4.14.0)(terser@5.30.3)(unocss@0.58.9(postcss@8.4.38)(rollup@4.14.0)(vite@5.2.8(@types/node@20.12.4)(terser@5.30.3)))(vite@5.2.8(@types/node@20.12.4)(terser@5.30.3)))(rollup@4.14.0)(vite@5.2.8(@types/node@20.12.4)(terser@5.30.3))(vue@3.4.21)
+      '@nuxtjs/toast':
+        specifier: ^3.3.1
+        version: 3.3.1
+      '@pinia/nuxt':
+        specifier: ^0.5.1
+        version: 0.5.1(rollup@4.14.0)(vue@3.4.21)
+      cookie-universal-nuxt:
+        specifier: ^2.2.2
+        version: 2.2.2
       nuxt:
         specifier: ^3.11.1
         version: 3.11.1(@parcel/watcher@2.4.1)(@types/node@20.12.4)(@unocss/reset@0.58.9)(encoding@0.1.13)(floating-vue@5.2.2(@nuxt/kit@3.11.2(rollup@4.14.0))(vue@3.4.21))(fuse.js@6.6.2)(ioredis@5.3.2)(rollup@4.14.0)(terser@5.30.3)(unocss@0.58.9(postcss@8.4.38)(rollup@4.14.0)(vite@5.2.8(@types/node@20.12.4)(terser@5.30.3)))(vite@5.2.8(@types/node@20.12.4)(terser@5.30.3))
+      pinia:
+        specifier: ^2.1.7
+        version: 2.1.7(vue@3.4.21)
       vue:
         specifier: ^3.4.21
         version: 3.4.21
       vue-router:
         specifier: ^4.3.0
         version: 4.3.0(vue@3.4.21)
+      vue-toast-notification:
+        specifier: ^3.1.2
+        version: 3.1.2(vue@3.4.21)
     devDependencies:
       zod:
         specifier: ^3.23.8
@@ -598,6 +613,9 @@ packages:
   '@nuxtjs/tailwindcss@6.12.0':
     resolution: {integrity: sha512-vXvEq8z177TQcx0tc10mw3O6T9WeN0iTL8hIKGDfidmr+HKReexJU01aPgHefFrCu4LJB70egYFYnywzB9lMyQ==}
 
+  '@nuxtjs/toast@3.3.1':
+    resolution: {integrity: sha512-b9JpyjSw5ZOyjskBvNc4NEebe0qxB6LivBlO84gHOnsaF23rLkJoBfVNDcXwGNDl7vm09yM4WqBGTkm/OQ0ZCQ==}
+
   '@parcel/watcher-android-arm64@2.4.1':
     resolution: {integrity: sha512-LOi/WTbbh3aTn2RYddrO8pnapixAziFl6SMxHM69r3tvdSm94JtCenaKgk1GRg5FJ5wpMCpHeW+7yqPlvZv7kg==}
     engines: {node: '>= 10.0.0'}
@@ -679,6 +697,9 @@ packages:
   '@parcel/watcher@2.4.1':
     resolution: {integrity: sha512-HNjmfLQEVRZmHRET336f20H/8kOozUGwk7yajvsonjNxbj2wBTK1WsQuHkD5yYh9RxFGL2EyDHryOihOwUoKDA==}
     engines: {node: '>= 10.0.0'}
+
+  '@pinia/nuxt@0.5.1':
+    resolution: {integrity: sha512-6wT6TqY81n+7/x3Yhf0yfaJVKkZU42AGqOR0T3+UvChcaOJhSma7OWPN64v+ptYlznat+fS1VTwNAcbi2lzHnw==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -908,6 +929,9 @@ packages:
   '@tufjs/models@2.0.0':
     resolution: {integrity: sha512-c8nj8BaOExmZKO2DXhDfegyhSGcG9E/mPN3U13L+/PsoWm1uaGiHHjxqSHQiasDBQwDA3aHuw9+9spYAP1qvvg==}
     engines: {node: ^16.14.0 || >=18.0.0}
+
+  '@types/cookie@0.3.3':
+    resolution: {integrity: sha512-LKVP3cgXBT9RYj+t+9FDKwS5tdI+rPBXaNSkma7hvqy35lc7mAokC2zsqWJH0LaqIt3B962nuYI77hsJoT1gow==}
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
@@ -1557,6 +1581,16 @@ packages:
 
   cookie-es@1.1.0:
     resolution: {integrity: sha512-L2rLOcK0wzWSfSDA33YR+PUHDG10a8px7rUHKWbGLP4YfbsMed2KFUw5fczvDPbT98DDe3LEzviswl810apTEw==}
+
+  cookie-universal-nuxt@2.2.2:
+    resolution: {integrity: sha512-Pr6P5UCzl1EAvPh7z7jFkknBw0KTdykm6gFmPHrH4LV9s3flVmAH0ZP/ZqUXcp6b0SKZfizkn+XR1cO+QinGhQ==}
+
+  cookie-universal@2.2.2:
+    resolution: {integrity: sha512-nUXF6HH2YKbn8vGcdSzWJhjRkDHbnbekuVu2nsRu00zYsX7o/H3xGJRlPVoM4wX/8cpJYpyi9nDt+boER0Wjug==}
+
+  cookie@0.4.2:
+    resolution: {integrity: sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==}
+    engines: {node: '>= 0.6'}
 
   cookies@0.9.1:
     resolution: {integrity: sha512-TG2hpqe4ELx54QER/S3HQ9SRVnQnGBtKUz5bLQWtYAQ+o6GpgMs6sYUvaiJjVxb+UXwhRhAEP3m7LbsIZ77Hmw==}
@@ -2926,6 +2960,18 @@ packages:
     resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
     engines: {node: '>=0.10.0'}
 
+  pinia@2.1.7:
+    resolution: {integrity: sha512-+C2AHFtcFqjPih0zpYuvof37SFxMQ7OEG2zV9jRI12i9BOy3YQVAHwdKtyyc8pDcDyIc33WCIsZaCFWU7WWxGQ==}
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.3.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
+
   pirates@4.0.6:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
@@ -3960,6 +4006,15 @@ packages:
     peerDependencies:
       vue: ^3.2.0
 
+  vue-toast-notification@3.1.2:
+    resolution: {integrity: sha512-oNRL/W9aaHoeScp+iTIW7k09vM16/+8aptp2maa+7qTB43JuxmAgKdXKFYtf+uvSNOYYq2BIWgLCeJ61pwom/A==}
+    engines: {node: '>=12.15.0'}
+    peerDependencies:
+      vue: ^3.0
+
+  vue-toasted@1.1.28:
+    resolution: {integrity: sha512-UUzr5LX51UbbiROSGZ49GOgSzFxaMHK6L00JV8fir/CYNJCpIIvNZ5YmS4Qc8Y2+Z/4VVYRpeQL2UO0G800Raw==}
+
   vue-virtual-scroller@2.0.0-beta.8:
     resolution: {integrity: sha512-b8/f5NQ5nIEBRTNi6GcPItE4s7kxNHw2AIHLtDp+2QvqdTjVN0FgONwX9cr53jWRgnu+HRLPaWDOR2JPI5MTfQ==}
     peerDependencies:
@@ -4973,6 +5028,10 @@ snapshots:
       - ts-node
       - uWebSockets.js
 
+  '@nuxtjs/toast@3.3.1':
+    dependencies:
+      vue-toasted: 1.1.28
+
   '@parcel/watcher-android-arm64@2.4.1':
     optional: true
 
@@ -5033,6 +5092,17 @@ snapshots:
       '@parcel/watcher-win32-arm64': 2.4.1
       '@parcel/watcher-win32-ia32': 2.4.1
       '@parcel/watcher-win32-x64': 2.4.1
+
+  '@pinia/nuxt@0.5.1(rollup@4.14.0)(vue@3.4.21)':
+    dependencies:
+      '@nuxt/kit': 3.11.2(rollup@4.14.0)
+      pinia: 2.1.7(vue@3.4.21)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - rollup
+      - supports-color
+      - typescript
+      - vue
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
@@ -5224,6 +5294,8 @@ snapshots:
     dependencies:
       '@tufjs/canonical-json': 2.0.0
       minimatch: 9.0.4
+
+  '@types/cookie@0.3.3': {}
 
   '@types/estree@1.0.5': {}
 
@@ -6082,6 +6154,18 @@ snapshots:
   convert-source-map@2.0.0: {}
 
   cookie-es@1.1.0: {}
+
+  cookie-universal-nuxt@2.2.2:
+    dependencies:
+      '@types/cookie': 0.3.3
+      cookie-universal: 2.2.2
+
+  cookie-universal@2.2.2:
+    dependencies:
+      '@types/cookie': 0.3.3
+      cookie: 0.4.2
+
+  cookie@0.4.2: {}
 
   cookies@0.9.1:
     dependencies:
@@ -7702,6 +7786,12 @@ snapshots:
 
   pify@2.3.0: {}
 
+  pinia@2.1.7(vue@3.4.21):
+    dependencies:
+      '@vue/devtools-api': 6.6.1
+      vue: 3.4.21
+      vue-demi: 0.14.7(vue@3.4.21)
+
   pirates@4.0.6: {}
 
   pkg-types@1.0.3:
@@ -8864,6 +8954,12 @@ snapshots:
     dependencies:
       '@vue/devtools-api': 6.6.1
       vue: 3.4.21
+
+  vue-toast-notification@3.1.2(vue@3.4.21):
+    dependencies:
+      vue: 3.4.21
+
+  vue-toasted@1.1.28: {}
 
   vue-virtual-scroller@2.0.0-beta.8(vue@3.4.21):
     dependencies:

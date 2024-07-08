@@ -1,6 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  runtimeConfig: {
+    public: {
+      apiBase: 'http://localhost:8000/v1/'
+    }
+  },
   app: {
     head: {
       link: [
@@ -27,5 +32,9 @@ export default defineNuxtConfig({
   colorMode: {
     preference: 'light'
   },
-  modules: ['@nuxt/image', '@nuxt/ui']
+  modules: [
+    '@nuxt/image',
+    '@nuxt/ui',
+    '@pinia/nuxt',
+  ],
 })

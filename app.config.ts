@@ -1,5 +1,8 @@
 export default defineAppConfig({
   ui: {
-    primary: 'customPrimary'
+    primary: 'customPrimary',
+    notifications: {
+      position: 'top-0 bottom-auto'
+    }
   }
 })
