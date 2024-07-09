@@ -8,17 +8,17 @@ export default defineNuxtPlugin((nuxtApp) => {
     const api = $fetch.create({
         baseURL: apiBase,
         onRequest({ request, options, error }) {
-            console.log('on request')
-            // if (session.value?.token) {
-            //     const headers = options.headers ||= {}
-            //     if (Array.isArray(headers)) {
-            //         headers.push(['Authorization', `Bearer ${session.value?.token}`])
-            //     } else if (headers instanceof Headers) {
-            //         headers.set('Authorization', `Bearer ${session.value?.token}`)
-            //     } else {
-            //         headers.Authorization = `Bearer ${session.value?.token}`
-            //     }
-            // }
+            const token = useCookie('token')
+            if (token) {
+                const headers = options.headers ||= {}
+                if (Array.isArray(headers)) {
+                    headers.push(['Authorization', `Bearer ${token.value}`])
+                } else if (headers instanceof Headers) {
+                    headers.set('Authorization', `Bearer ${token.value}`)
+                } else {
+                    headers.Authorization = `Bearer ${token.value}`
+                }
+            }
         },
         async onResponseError({ response }) {
             if (response.status === 401) {
@@ -27,7 +27,6 @@ export default defineNuxtPlugin((nuxtApp) => {
         }
     })
 
-    // Expose to useNuxtApp().$api
     return {
         provide: {
             api

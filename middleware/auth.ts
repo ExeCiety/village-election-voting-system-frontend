@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware((to) => {
     }
 
     if (token.value && to.path === '/auth/officer/login') {
-        return navigateTo('/');
+        return navigateTo('/officer/dashboard');
     }
 
     if (!token.value && to.path !== '/auth/officer/login') {

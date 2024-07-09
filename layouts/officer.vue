@@ -37,6 +37,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { sidebarMenuItems } from '~/data/layout/sidebar'
+import {useAuthStore} from "~/stores/auth";
 
 const router = useRouter()
 
@@ -59,9 +60,13 @@ const closeLogoutModal = () => {
   isModalLogoutConfirmationOpen.value = false
 }
 
+const authStore = useAuthStore();
+const { authenticated } = storeToRefs(authStore);
+
 const handleLogout = async () => {
   try {
     // handle logout
+    authStore.logout()
     router.push('/auth/officer/login')
   } catch (error) {
     // handle error
