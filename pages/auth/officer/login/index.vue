@@ -73,7 +73,7 @@ const onSubmit = async (
   try {
     await authStore.login(formState);
     if (authenticated) {
-      await router.push('/');
+      await router.push('/officer/dashboard');
     }
   } catch (error: any) {
     if (error.data) {
