@@ -11,7 +11,10 @@ export const useAuthStore = defineStore('auth', {
     }),
     actions: {
         async login({ username, password }: FormLoginOfficerState) {
-            const { data, error } = await useApi<Responser.MessageResponse<AuthSerializer.AuthData>>('auth/login', {
+            const {
+                data,
+                error
+            } = await useApi<Responser.MessageResponse<AuthSerializer.AuthData>>('auth/login', {
                 method: 'POST',
                 body: {
                     username,
