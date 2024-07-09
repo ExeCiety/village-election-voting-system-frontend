@@ -72,7 +72,7 @@ const onSubmit = async (
 
   try {
     await authStore.login(formState);
-    if (authStore.authenticated) {
+    if (authenticated) {
       await router.push('/');
     }
   } catch (error: any) {
