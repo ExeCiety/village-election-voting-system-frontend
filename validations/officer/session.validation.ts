@@ -9,7 +9,7 @@ export const CREATE: ZodType = z
       .min(1, {
         message: 'Oops, nama sesi pemilihan tidak boleh kosong'
       }),
-    start: z.coerce
+    start_date: z.coerce
       .date({
         errorMap: (issue, { defaultError }) => ({
           message:
@@ -26,7 +26,7 @@ export const CREATE: ZodType = z
           message: 'Oops, tanggal mulai tidak boleh kurang dari hari ini'
         }
       ),
-    end: z.coerce
+    end_date: z.coerce
       .date({
         errorMap: (issue, { defaultError }) => ({
           message:
@@ -47,9 +47,9 @@ export const CREATE: ZodType = z
   .refine(
     (data) => {
       return (
-        new Date(data.end) > new Date(data.start) &&
-        new Date(data.end) >
-          new Date(new Date(data.start).getTime() + 5 * 60 * 60 * 1000 - 1)
+        new Date(data.end_date) > new Date(data.start_date) &&
+        new Date(data.end_date) >
+          new Date(new Date(data.start_date).getTime() + 5 * 60 * 60 * 1000 - 1)
       )
     },
     {
@@ -68,7 +68,7 @@ export const UPDATE: ZodType = z
       .min(1, {
         message: 'Oops, nama sesi pemilihan tidak boleh kosong'
       }),
-    start: z.coerce.date({
+    start_date: z.coerce.date({
       errorMap: (issue, { defaultError }) => ({
         message:
           issue.code === 'invalid_date'
@@ -76,7 +76,7 @@ export const UPDATE: ZodType = z
             : defaultError
       })
     }),
-    end: z.coerce.date({
+    end_date: z.coerce.date({
       errorMap: (issue, { defaultError }) => ({
         message:
           issue.code === 'invalid_date'
@@ -88,9 +88,9 @@ export const UPDATE: ZodType = z
   .refine(
     (data) => {
       return (
-        new Date(data.end) > new Date(data.start) &&
-        new Date(data.end) >
-          new Date(new Date(data.start).getTime() + 5 * 60 * 60 * 1000 - 1)
+        new Date(data.end_date) > new Date(data.start_date) &&
+        new Date(data.end_date) >
+          new Date(new Date(data.start_date).getTime() + 5 * 60 * 60 * 1000 - 1)
       )
     },
     {

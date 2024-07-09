@@ -125,10 +125,14 @@ import { tableColumns, sessions } from '~/data/model/session'
 import type {
   Session,
   FormState as SessionFormState,
-  FormUiState as SessionFormUiState
+  FormUiState as SessionFormUiState,
+  DeleteIds as SessionDelete
 } from '~/types/model/session.type'
 import type { Schema } from '~/types/validation/validation.type'
 import { CREATE, UPDATE } from '~/validations/officer/session.validation'
+import { useElectionSessionStore } from '~/stores/elections'
+import { format, parseISO } from 'date-fns';
+
 
 useHead({
   title: 'E-Voting - Pemilihan'
@@ -143,6 +147,7 @@ const isModalErrorOpen = ref(false)
 const isModalDeleteConfirmationOpen = ref(false)
 const isModalDeleteBulkConfirmationOpen = ref(false)
 
+
 const q = ref('')
 const page = ref(1)
 const limit = ref(10)
@@ -152,38 +157,47 @@ const isButtonDeleteDisabled = computed(
 )
 
 const formState = reactive<SessionFormState>({
+  id: '',
   name: '',
-  start: '',
-  end: ''
+  start_date: '',
+  end_date: ''
 })
 
 const uiFormState = reactive<SessionFormUiState>({
   disabledInputs: {
     button: false,
     name: false,
-    start: false,
-    end: false
+    start_date: false,
+    end_date: false
   },
   error: '',
   errors: {
     name: '',
-    start: '',
-    end: ''
+    start_date: '',
+    end_date: ''
   }
 })
+
+const deleteId = reactive<SessionDelete>({
+  ids: [],
+})
+
+const store = useElectionSessionStore()
+const { electionSessions } = storeToRefs(store);
+await store.getListElectionSession()
 
 const toggleInputs = (status: boolean) => {
   uiFormState.disabledInputs.button = status
   uiFormState.disabledInputs.name = status
-  uiFormState.disabledInputs.start = status
-  uiFormState.disabledInputs.end = status
+  uiFormState.disabledInputs.start_date = status
+  uiFormState.disabledInputs.end_date = status
 }
 
 const resetFormState = () => {
   Object.assign(formState, {
     name: '',
-    start: '',
-    end: ''
+    start_date: '',
+    end_date: ''
   })
 }
 
@@ -194,7 +208,7 @@ const openModalFormCreate = () => {
 }
 
 const openModalFormEdit = (id: Session['id']) => {
-  const session = sessions.find((session) => session.id === id)
+  const session = store.getByIdElectionSession(id)
 
   if (!session) {
     uiFormState.error = 'Oops, sesi pemilihan tidak ditemukan'
@@ -204,9 +218,10 @@ const openModalFormEdit = (id: Session['id']) => {
 
   sessionId.value = session.id
   Object.assign(formState, {
+    id: session.id,
     name: session.name,
-    start: session.start,
-    end: session.end
+    start_date: format(parseISO(session.start_date), 'yyyy-MM-dd\'T\'HH:mm'),
+    end_date:  format(parseISO(session.end_date), 'yyyy-MM-dd\'T\'HH:mm'),
   })
   isEdit.value = true
   isModalFormOpen.value = true
@@ -252,8 +267,9 @@ watch(q, () => {
 })
 
 const filtered = computed(() => {
+
   const offset = (page.value - 1) * limit.value
-  let filteredSessions: Session[] = sessions
+  let filteredSessions: Session[] = store.electionSessions
 
   filteredSessions = filteredSessions.filter((session) =>
     session.name.toLowerCase().includes(q.value.toLowerCase())
@@ -272,16 +288,10 @@ const filtered = computed(() => {
 
 const onCreate = async (event: FormSubmitEvent<Schema<typeof CREATE>>) => {
   try {
+    formState.start_date = format(parseISO(formState.start_date), 'yyyy-MM-dd HH:mm:ss');
+    formState.end_date = format(parseISO(formState.end_date), 'yyyy-MM-dd HH:mm:ss');
     toggleInputs(true)
-    console.log(
-      'Session created data: ',
-      JSON.stringify({
-        data: {
-          id: String(sessions.length + 1),
-          ...event.data
-        }
-      })
-    )
+    await store.createElectionSession(formState)
 
     // handle create session
   } catch (error) {
@@ -298,19 +308,9 @@ const onCreate = async (event: FormSubmitEvent<Schema<typeof CREATE>>) => {
 
 const onUpdate = async (event: FormSubmitEvent<Schema<typeof UPDATE>>) => {
   try {
-    const session = sessions.find((session) => session.id === sessionId.value)
-    console.log('Session Updated Selected: ', JSON.stringify({ session }))
-    console.log(
-      'Session Updated Data: ',
-      JSON.stringify({
-        data: {
-          id: sessionId.value,
-          ...event.data
-        }
-      })
-    )
-
-    // handle update session
+    formState.start_date = format(parseISO(formState.start_date), 'yyyy-MM-dd HH:mm:ss');
+    formState.end_date = format(parseISO(formState.end_date), 'yyyy-MM-dd HH:mm:ss');
+    await store.updateElectionSession(formState)
   } catch (error) {
     uiFormState.error = 'Oops, something went wrong'
     isModalErrorOpen.value = true
@@ -326,9 +326,8 @@ const onUpdate = async (event: FormSubmitEvent<Schema<typeof UPDATE>>) => {
 const onDeleteSingle = async () => {
   try {
     uiFormState.disabledInputs.button = true
-    const session = sessions.find((session) => session.id === sessionId.value)
-    console.log('Session Deleted Selected: ', JSON.stringify({ session }))
-    // handle delete single session
+    deleteId.ids.push(sessionId.value);
+    await store.deleteElectionSession(deleteId);
   } catch (error) {
     uiFormState.error = 'Oops, something went wrong'
     isModalErrorOpen.value = true
