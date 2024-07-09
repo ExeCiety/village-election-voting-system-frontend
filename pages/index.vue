@@ -8,6 +8,10 @@
 useHead({
   title: 'E-Voting - Home'
 })
+
+definePageMeta({
+  middleware: 'auth'
+})
 </script>
 
 <style scoped></style>
