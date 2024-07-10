@@ -5,10 +5,17 @@
     :schema="LOGIN_VOTER"
     :submit="onSubmit"
   />
+  <ModalNotification
+      v-model="isModalCheckOtpOpen"
+      type="error"
+      title="Gagal Check OTP"
+      :message="uiState.error"
+      @closeModal="() => isModalCheckOtpOpen = false"
+  />
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import {reactive, ref} from 'vue'
 import type { FormSubmitEvent } from '#ui/types'
 import type {
   FormLoginVoterState,
@@ -16,14 +23,19 @@ import type {
 } from '~/types/model/auth.type'
 import type { Schema } from '~/types/validation/validation.type'
 import { LOGIN_VOTER } from '~/validations/auth/auth.validation'
+import { useVoterStore } from "~/stores/voter";
 
 useHead({
   title: 'E-Voting - Voter Login'
 })
 
 definePageMeta({
-  layout: 'auth'
+  layout: 'auth',
+  middleware: 'auth-voter'
 })
+
+const router = useRouter()
+const voterStore = useVoterStore()
 
 const state = reactive<FormLoginVoterState>({
   token: ''
@@ -40,18 +52,27 @@ const uiState = reactive<FormLoginVoterUiState>({
   }
 })
 
+const isModalCheckOtpOpen = ref(false)
+
 const toggleInputs = (status: boolean) => {
   uiState.disabledInputs.token = status
   uiState.disabledInputs.button = status
 }
 
 const onSubmit = async (event: FormSubmitEvent<Schema<typeof LOGIN_VOTER>>) => {
+  toggleInputs(true)
+
   try {
-    toggleInputs(true)
-  } catch (error) {
-    // Handle error
-  } finally {
-    // toggleInputs(false)
+    await voterStore.checkOngoingAvailableOTP({
+      token: state.token
+    })
+
+    await router.push('/voter/dashboard')
+  } catch (error: any) {
+    uiState.error = error.message || ''
+    isModalCheckOtpOpen.value = true
   }
+
+  toggleInputs(false)
 }
 </script>

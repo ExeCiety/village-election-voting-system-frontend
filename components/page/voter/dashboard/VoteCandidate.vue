@@ -5,12 +5,12 @@
       v-for="candidate in props.candidates"
       :key="candidate.id"
     >
-      <h1 class="serial-number">{{ candidate.serial_number }}</h1>
+      <h1 class="serial-number">{{ candidate.number }}</h1>
       <div class="photo-container">
-        <NuxtImg class="photo" :src="candidate.photo_url" />
+        <NuxtImg class="photo" :src="candidate.image_url" />
       </div>
-      <h1 class="candidate-name mb-2">{{ candidate.chairperson_name }}</h1>
-      <h1 class="candidate-name mb-5">{{ candidate.deputy_name }}</h1>
+      <h1 class="candidate-name mb-2">{{ candidate.first_candidate_name }}</h1>
+      <h1 class="candidate-name mb-5">{{ candidate.second_candidate_name }}</h1>
       <URadio
         :ui="{ base: 'h-6 w-6', border: 'border-[3px]' }"
         v-model="props.state.candidate_id"
@@ -35,13 +35,13 @@
 import type {
   VoteCandidateState,
   VoteCandidateUiState,
-  CandidateResponse
 } from '~/types/model/candidate.type'
+import type {ElectionSessionSerializer} from "~/types/serializer/election-session";
 
 type VoteCandidateProps = {
   state: VoteCandidateState
   uiState: VoteCandidateUiState
-  candidates: CandidateResponse[]
+  candidates: ElectionSessionSerializer.CandidatePair[]
 }
 
 const props = defineProps<VoteCandidateProps>()
@@ -58,11 +58,11 @@ const emit = defineEmits(['openModalVoteCandidateConfirmation'])
 }
 
 .photo-container {
-  @apply bg-customPrimary-500 py-6 px-4 rounded-[91px] mb-6;
+  @apply bg-customPrimary-500 py-6 px-4 rounded-[91px] mb-6 min-h-[400px] flex items-center justify-center;
 }
 
 .photo {
-  @apply w-[200px] md:w-[250px] lg:w-[300px] xl:w-[350px] 2xl:w-[380px];
+  @apply w-[200px] md:w-[250px] lg:w-[300px] xl:w-[350px] 2xl:w-[380px] rounded-[91px];
 }
 
 .serial-number {

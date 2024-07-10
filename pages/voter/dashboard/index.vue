@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout name="voter">
-    <template #page_title>Dashboard</template>
+    <template #page_title>Voting</template>
     <ModalNotification
       v-model="isModalSuccessOpen"
       type="success"
@@ -27,12 +27,12 @@
         Calon Kepala Desa Cimareme
       </h1>
       <span class="text-center text-sm md:text-base font-normal">
-        Periode 2024/2029
+        {{ electionSessionStore.ongoingElectionSession?.name || '' }}
       </span>
       <VoteCandidate
         :state="voteCandidateState"
         :uiState="voteCandidateUiState"
-        :candidates="candidates"
+        :candidates="electionSessionStore.ongoingElectionSession?.candidate_pairs || []"
         @openModalVoteCandidateConfirmation="openModalVoteCandidateConfirmation"
       />
     </div>
@@ -40,19 +40,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
-import type {
-  VoteCandidateState,
-  VoteCandidateUiState
-} from '~/types/model/candidate.type'
-import { candidates } from '~/data/model/candidate'
+import {reactive, ref} from 'vue'
+import {useRouter} from 'vue-router'
+import type {VoteCandidateState, VoteCandidateUiState} from '~/types/model/candidate.type'
+import {useElectionSessionStore} from "~/stores/election-session";
 
 useHead({
-  title: 'E-Voting - Dashboard'
+  title: 'E-Voting - Dashboard',
+})
+
+definePageMeta({
+  middleware: 'auth-voter'
 })
 
 const router = useRouter()
+const electionSessionStore = useElectionSessionStore()
+const voterStore = useVoterStore()
 
 const isModalSuccessOpen = ref(false)
 const isModalErrorOpen = ref(false)
@@ -69,6 +72,17 @@ const voteCandidateUiState = reactive<VoteCandidateUiState>({
   },
   error: ''
 })
+
+const getCandidatePairs = async () => {
+  try {
+    await electionSessionStore.getOngoingElectionSession({
+      paginate: false
+    })
+  } catch (error: any) {
+    voteCandidateUiState.error = error.message || ''
+    isModalErrorOpen.value = true
+  }
+}
 
 const openModalVoteCandidateConfirmation = () => {
   if (!voteCandidateState.candidate_id) {
@@ -100,22 +114,28 @@ const toggleInputs = (status: boolean) => {
 }
 
 const onVoteCandidate = async () => {
+  toggleInputs(true)
+
   try {
-    toggleInputs(true)
-    isModalVoteCandidateConfirmationOpen.value = false
-    const candidateSelected = candidates.find(
-      (candidate) => candidate.id === voteCandidateState.candidate_id
-    )
-    console.log('Candidate Selected: ', JSON.stringify(candidateSelected))
-    // handle vote candidate
-  } catch (error) {
-    // handle error
-  } finally {
-    toggleInputs(false)
+    await voterStore.voteCandidate({
+      otp: voterStore.otp,
+      candidatePairId: voteCandidateState.candidate_id
+    })
+
     isModalSuccessOpen.value = true
-    // handle finally
+  } catch (error) {
+    voteCandidateUiState.error =
+        'Gagal menyimpan pilihan, silahkan coba lagi!'
+    isModalErrorOpen.value = true
   }
+
+  toggleInputs(false)
 }
+
+onMounted(async () => {
+  await nextTick()
+  await getCandidatePairs()
+})
 </script>
 
 <style scoped>

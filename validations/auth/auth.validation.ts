@@ -22,7 +22,7 @@ export const LOGIN_VOTER: ZodType = z.object({
     .string({
       required_error: 'Oops, token tidak boleh kosong'
     })
-    .min(8, {
-      message: 'Oops, token minimal 8 karakter'
+    .length(12, {
+      message: 'Oops, token harus 12 karakter'
     })
 })
