@@ -4,8 +4,6 @@ import type {Responser} from "~/types/serializer/responser";
 import type {FormState as SessionFormState, Session} from "~/types/model/session.type";
 import type {ElectionsSerializer} from "~/types/serializer/elections";
 
-const token = useCookie('token');
-
 export const useElectionSessionStore = defineStore('electionSession', {
     state: () => ({
         electionSessions: [],
@@ -16,17 +14,6 @@ export const useElectionSessionStore = defineStore('electionSession', {
         async getListElectionSession() {
             const { data, error } = await useApi<Responser.MessageResponse<ElectionsSerializer.ElectionData>>('election-sessions?paginate=true&per_page=10&page=1', {
                 method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token.value}`,
-                    'Content-Type': 'application/json',
-                },
-                default: () => ({
-                    message: '',
-                    data: {
-                        data: [],
-                    },
-                    error: null
-                })
             })
 
             if (!error.value) {
@@ -45,7 +32,6 @@ export const useElectionSessionStore = defineStore('electionSession', {
                     end_date,
                 },
                 headers: {
-                    Authorization: `Bearer ${token.value}`,
                     'Content-Type': 'application/json',
                 },
                 default: () => ({
@@ -76,7 +62,6 @@ export const useElectionSessionStore = defineStore('electionSession', {
                     end_date,
                 },
                 headers: {
-                    Authorization: `Bearer ${token.value}`,
                     'Content-Type': 'application/json',
                 },
                 default: () => ({
@@ -97,27 +82,20 @@ export const useElectionSessionStore = defineStore('electionSession', {
             }
         },
 
-        getByIdElectionSession(id:any) {
-            const { data, error } = useApi<Responser.MessageResponse<any>>('election-sessions/' + id, {
+        async getByIdElectionSession(id:any) {
+            console.log("id",id)
+            const { data, error } = await useApi<Responser.MessageResponse<any>>('election-sessions/' + id, {
                 method: 'GET',
                 headers: {
-                    Authorization: `Bearer ${token.value}`,
                     'Content-Type': 'application/json',
                 },
-                default: () => ({
-                    message: '',
-                    data: {
-                        id: '',
-                        name: '',
-                        start_date: '',
-                        end_date: '',
-                    },
-                    error: null
-                })
+                onResponse(context) {
+                    context.response._data.data
+                },
             })
 
             if (!error.value) {
-                return data.value.data;
+                return data.value.data
             } else {
                 throw error.value.data;
             }
@@ -126,7 +104,6 @@ export const useElectionSessionStore = defineStore('electionSession', {
             const { data, error } = useApi<Responser.MessageResponse<ElectionsSerializer.ElectionList>>('election-sessions/', {
                 method: 'DELETE',
                 headers: {
-                    Authorization: `Bearer ${token.value}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(ids),
