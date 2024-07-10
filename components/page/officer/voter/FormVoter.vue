@@ -23,21 +23,21 @@
       <UFormGroup size="lg" label="Sesi Pemilihan" name="session_id" required>
         <USelectMenu
           class="font-medium"
-          v-model="props.state.session_id"
+          v-model="props.state.election_session_id"
           size="lg"
           :options="
-            sessions.length > 0
-              ? ['-- Pilih Sesi Pemilihan --', ...sessions]
+            storeElection.electionSessions.length > 0
+              ? ['-- Pilih Sesi Pemilihan --', ...storeElection.electionSessions]
               : []
           "
           :placeholder="
-            sessions.length > 0
+            storeElection.electionSessions.length > 0
               ? '-- Pilih Sesi Pemilihan --'
               : '-- Sesi Pemilihan Tidak Tersedia --'
           "
           value-attribute="id"
           option-attribute="name"
-          :disabled="props.uiState.disabledInputs.session_id"
+          :disabled="props.uiState.disabledInputs.election_session_id"
         />
       </UFormGroup>
       <UFormGroup size="lg" label="NIK" name="nik" required>
@@ -51,18 +51,18 @@
       </UFormGroup>
       <UFormGroup size="lg" label="Nama" name="name" required>
         <UInput
-          v-model="props.state.name"
+          v-model="props.state.full_name"
           size="lg"
           placeholder="Masukan Nama"
-          :disabled="props.uiState.disabledInputs.name"
+          :disabled="props.uiState.disabledInputs.full_name"
         />
       </UFormGroup>
-      <UFormGroup size="lg" label="Tanggal Lahir" name="birthdate" required>
+      <UFormGroup size="lg" label="Tanggal Lahir" name="birth_date" required>
         <UInput
           type="date"
-          v-model="props.state.birthdate"
+          v-model="props.state.birth_date"
           size="lg"
-          :disabled="props.uiState.disabledInputs.birthdate"
+          :disabled="props.uiState.disabledInputs.birth_date"
         />
       </UFormGroup>
       <UFormGroup size="lg" label="Alamat" name="address" required>
@@ -114,7 +114,7 @@ import type {
   FormUiState as VoterFormUiState
 } from '~/types/model/voter.type'
 import type { Schema } from '~/types/validation/validation.type'
-import { sessions } from '~/data/model/session'
+import {useElectionSessionStore} from "~/stores/elections";
 
 type FormVoterProps = {
   state: VoterFormState
@@ -137,6 +137,10 @@ const genderOptions = [
     label: 'Perempuan'
   }
 ]
+
+const storeElection = useElectionSessionStore()
+const { electionSessions } = storeToRefs(storeElection);
+await storeElection.getListElectionSession()
 
 const handleInputNik = (event: Event) => {
   const target = event.target as HTMLInputElement
