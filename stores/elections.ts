@@ -64,16 +64,6 @@ export const useElectionSessionStore = defineStore('electionSession', {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                default: () => ({
-                    message: '',
-                    data: {
-                        id: '',
-                        name: '',
-                        start_date: '',
-                        end_date: '',
-                    },
-                    error: null
-                })
             })
             if (!error.value) {
                 window.location.reload();

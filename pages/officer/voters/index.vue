@@ -69,14 +69,14 @@
 <!--              option-attribute="name"-->
 <!--              @change="changefilterSessionName"-->
 <!--            />-->
-<!--            <USelectMenu-->
-<!--              class="font-medium w-full md:w-[48%] lg:w-full xl:w-[48%] 2xl:w-[192px] flex-shrink-0"-->
-<!--              v-model="filterOtpStatus"-->
-<!--              size="lg"-->
-<!--              :options="['Filter by OTP Status', 'Available', 'Not Available']"-->
-<!--              placeholder="Filter by OTP Status"-->
-<!--              @change="changefilterOtpStatus"-->
-<!--            />-->
+            <USelectMenu
+              class="font-medium w-full md:w-[48%] lg:w-full xl:w-[48%] 2xl:w-[192px] flex-shrink-0"
+              v-model="filterOtpStatus"
+              size="lg"
+              :options="['Filter by OTP Status', 'Available', 'Not Available']"
+              placeholder="Filter by OTP Status"
+              @change="changefilterOtpStatus"
+            />
             <UButton
               class="font-medium flex justify-center items-center flex-shrink-0"
               :class="[
@@ -145,10 +145,12 @@ import type {
   Voter,
   VoterResponse,
   FormState as VoterFormState,
-  FormUiState as VoterFormUiState
+  FormUiState as VoterFormUiState,
+  DeleteIds as VoterDelete
 } from '~/types/model/voter.type'
 import { CREATE_UPDATE } from '~/validations/officer/voter.validation'
 import {useVoterStore} from "~/stores/voters";
+import type {DeleteIds as SessionDelete} from "~/types/model/session.type";
 
 
 useHead({
@@ -176,10 +178,10 @@ const isButtonDeleteDisabled = computed(
 
 const formState = reactive<VoterFormState>({
   id: '',
-  session_id: '',
+  election_session_id: '',
   nik: '',
   full_name: '',
-  birthdate: '',
+  birth_date: '',
   address: '',
   gender: ''
 })
@@ -187,29 +189,33 @@ const formState = reactive<VoterFormState>({
 const uiFormState = reactive<VoterFormUiState>({
   disabledInputs: {
     button: false,
-    session_id: false,
+    election_session_id: false,
     nik: false,
     full_name: false,
-    birthdate: false,
+    birth_date: false,
     address: false,
     gender: false
   },
   error: '',
   errors: {
-    session_id: '',
+    election_session_id: '',
     nik: '',
     full_name: '',
-    birthdate: '',
+    birth_date: '',
     address: '',
     gender: ''
   }
 })
 
+const deleteId = reactive<VoterDelete>({
+  ids: [],
+})
+
 const toggleInputs = (status: boolean) => {
-  uiFormState.disabledInputs.session_id = status
+  uiFormState.disabledInputs.election_session_id = status
   uiFormState.disabledInputs.nik = status
   uiFormState.disabledInputs.full_name = status
-  uiFormState.disabledInputs.birthdate = status
+  uiFormState.disabledInputs.birth_date = status
   uiFormState.disabledInputs.address = status
   uiFormState.disabledInputs.gender = status
   uiFormState.disabledInputs.button = status
@@ -217,10 +223,10 @@ const toggleInputs = (status: boolean) => {
 
 const resetFormState = () => {
   Object.assign(formState, {
-    session_id: '',
+    election_session: '',
     nik: '',
     full_name: '',
-    birthdate: '',
+    birth_date: '',
     address: '',
     gender: 'male'
   })
@@ -232,9 +238,9 @@ const openModalFormCreate = () => {
   isModalFormOpen.value = true
 }
 
-const openModalFormEdit = (id: Voter['id']) => {
-  const voter = voters.find((voter) => voter.id === id)
-
+const openModalFormEdit = async (id: Voter['id']) => {
+  const voter = await storeVoter.getByIdVoter(id)
+  console.log("getById",voter)
   if (!voter) {
     uiFormState.error = 'Oops, pemilih tidak ditemukan'
     isModalErrorOpen.value = true
@@ -243,10 +249,11 @@ const openModalFormEdit = (id: Voter['id']) => {
 
   voterId.value = id
   Object.assign(formState, {
-    session_id: voter!.session.id,
+    id: voter!.id,
+    election_session_id: voter!.election_session.id,
     nik: voter!.nik,
     full_name: voter!.full_name,
-    birthdate: voter!.birthdate,
+    birth_date: voter!.birth_date,
     address: voter!.address,
     gender: voter!.gender
   })
@@ -313,16 +320,16 @@ const filtered = computed(() => {
   let filteredVoters: VoterResponse[] = storeVoter.voterSessions
 
   console.log("call",filteredVoters)
-  // if (filterOtpStatus.value === 'Available')
-  //   filteredVoters = filteredVoters.filter((voter) => voter.otp_status)
-  //
-  // if (filterOtpStatus.value === 'Not Available')
-  //   filteredVoters = filteredVoters.filter((voter) => !voter.otp_status)
-  //
-  // if (filterSessionName.value)
-  //   filteredVoters = filteredVoters.filter(
-  //     (voter) => voter.session.name === filterSessionName.value
-  //   )
+  if (filterOtpStatus.value === 'Available')
+    filteredVoters = filteredVoters.filter((voter) => voter.otp_status)
+
+  if (filterOtpStatus.value === 'Not Available')
+    filteredVoters = filteredVoters.filter((voter) => !voter.otp_status)
+
+  if (filterSessionName.value)
+    filteredVoters = filteredVoters.filter(
+      (voter) => voter.session.name === filterSessionName.value
+    )
 
   filteredVoters = filteredVoters.filter(
     (voter) =>
@@ -346,17 +353,18 @@ const onCreate = async (
 ) => {
   try {
     toggleInputs(true)
-    console.log(
-      'Voter created data: ',
-      JSON.stringify({
-        data: {
-          id: String(voters.length + 1),
-          ...event.data,
-          otp: '12345678',
-          otp_status: false
-        }
-      })
-    )
+    await storeVoter.createVoter(formState)
+    // console.log(
+    //   'Voter created data: ',
+    //   JSON.stringify({
+    //     data: {
+    //       id: String(voters.length + 1),
+    //       ...event.data,
+    //       otp: '12345678',
+    //       otp_status: false
+    //     }
+    //   })
+    // )
     // handle create
   } catch (error) {
     uiFormState.error = 'Oops, something went wrong'
@@ -376,19 +384,18 @@ const onUpdate = async (
 ) => {
   try {
     toggleInputs(true)
-    const voter = voters.find((voter) => voter.id === voterId.value)
-    console.log('Voter Updated Selected: ', JSON.stringify({ voter }))
-    console.log(
-      'Voter updated data: ',
-      JSON.stringify({
-        data: {
-          id: voterId.value,
-          ...event.data,
-          otp: '12345678',
-          otp_status: false
-        }
-      })
-    )
+    await storeVoter.updateVoter(formState)
+    // console.log(
+    //   'Voter updated data: ',
+    //   JSON.stringify({
+    //     data: {
+    //       id: voterId.value,
+    //       ...event.data,
+    //       otp: '12345678',
+    //       otp_status: false
+    //     }
+    //   })
+    // )
     // handle update
   } catch (error) {
     uiFormState.error = 'Oops, something went wrong'
@@ -405,8 +412,9 @@ const onUpdate = async (
 const onDeleteSingle = async () => {
   try {
     uiFormState.disabledInputs.button = true
-    const voter = voters.find((voter) => voter.id === voterId.value)
-    console.log('Voter Deleted Selected: ', JSON.stringify({ voter }))
+    deleteId.ids.push(voterId.value);
+    await storeVoter.deleteVoter(deleteId);
+    console.log('Voter Deleted Selected: ', JSON.stringify({ deleteId }))
     // handle delete
   } catch (error) {
     uiFormState.error = 'Oops, something went wrong'

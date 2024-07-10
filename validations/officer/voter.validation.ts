@@ -1,7 +1,7 @@
 import { z, ZodType } from 'zod'
 
 export const CREATE_UPDATE: ZodType = z.object({
-  session_id: z
+    election_session_id: z
     .string({
       required_error: 'Oops, nama sesi pemilihan tidak boleh kosong'
     })
@@ -25,7 +25,7 @@ export const CREATE_UPDATE: ZodType = z.object({
     .min(1, {
       message: 'Oops, nama tidak boleh kosong'
     }),
-  birthdate: z.coerce
+  birth_date: z.coerce
     .date({
       required_error: 'Oops, tanggal lahir tidak boleh kosong'
     })

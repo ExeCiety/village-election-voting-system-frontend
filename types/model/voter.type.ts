@@ -4,9 +4,9 @@ export type Voter = {
   id: string
   nik: string
   full_name: string
-  birthdate: string
+  birth_date: string
   address: string
-  gender: string
+  gender: 'Male' | 'Female'
   otp: string
   otp_status: boolean
 }
@@ -15,32 +15,36 @@ export type VoterResponse = Voter & {
   session: Session
 }
 
+export type DeleteIds = {
+  ids: []
+}
+
 export type FormState = {
   id: string
-  session_id: string
+  election_session_id: string
   nik: string
   full_name: string
-  birthdate: string
+  birth_date: string
   address: string
-  gender: 'Male' | 'Female'
+  gender: string
 }
 
 export type FormUiState = {
   disabledInputs: {
     button: boolean
-    session_id: boolean
+    election_session_id: boolean
     nik: boolean
     full_name: boolean
-    birthdate: boolean
+    birth_date: boolean
     address: boolean
     gender: boolean
   }
   error: string
   errors: {
-    session_id: string
+    election_session_id: string
     nik: string
     full_name: string
-    birthdate: string
+    birth_date: string
     address: string
     gender: string
   }
