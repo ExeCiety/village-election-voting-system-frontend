@@ -13,12 +13,12 @@ export const tableColumns: TableColumns[] = [
     sortable: true
   },
   {
-    key: 'start',
+    key: 'start_date',
     label: 'Waktu Mulai',
     sortable: true
   },
   {
-    key: 'end',
+    key: 'end_date',
     label: 'Waktu Selesai',
     sortable: true
   },

@@ -3,10 +3,10 @@ import type { Session } from './session.type'
 export type Voter = {
   id: string
   nik: string
-  name: string
+  full_name: string
   birthdate: string
   address: string
-  gender: 'male' | 'female'
+  gender: string
   otp: string
   otp_status: boolean
 }
@@ -16,12 +16,13 @@ export type VoterResponse = Voter & {
 }
 
 export type FormState = {
+  id: string
   session_id: string
   nik: string
-  name: string
+  full_name: string
   birthdate: string
   address: string
-  gender: string
+  gender: 'Male' | 'Female'
 }
 
 export type FormUiState = {
@@ -29,7 +30,7 @@ export type FormUiState = {
     button: boolean
     session_id: boolean
     nik: boolean
-    name: boolean
+    full_name: boolean
     birthdate: boolean
     address: boolean
     gender: boolean
@@ -38,7 +39,7 @@ export type FormUiState = {
   errors: {
     session_id: string
     nik: string
-    name: string
+    full_name: string
     birthdate: string
     address: string
     gender: string

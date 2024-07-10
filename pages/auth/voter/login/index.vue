@@ -23,7 +23,6 @@ import type {
 } from '~/types/model/auth.type'
 import type { Schema } from '~/types/validation/validation.type'
 import { LOGIN_VOTER } from '~/validations/auth/auth.validation'
-import { useVoterStore } from "~/stores/voter";
 
 useHead({
   title: 'E-Voting - Voter Login'
