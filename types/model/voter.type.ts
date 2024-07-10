@@ -45,3 +45,8 @@ export type FormUiState = {
     gender: string
   }
 }
+
+export type FormVoteCandidateState = {
+    otp: string
+    candidatePairId: string
+}

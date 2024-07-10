@@ -1,6 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  devServer: {
+    port: Number(process.env.PORT) || 3000,
+  },
   runtimeConfig: {
     public: {
       apiBase: 'http://localhost:8000/v1/'

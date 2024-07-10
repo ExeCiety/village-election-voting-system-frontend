@@ -1,4 +1,5 @@
 import type { Session } from './session.type'
+import type { getPaginationResponse } from "~/types/model/pagination.type";
 
 export type Candidate = {
   id: string
@@ -52,7 +53,6 @@ export type DetailState = {
   photo_url: string
 }
 
-
 export type VoteCandidateState = {
   candidate_id: string
 }
@@ -63,4 +63,8 @@ export type VoteCandidateUiState = {
     candidate_id: boolean
   }
   error: string
+}
+
+export type GetOngoingCandidatePairsPayload = getPaginationResponse & {
+  //
 }

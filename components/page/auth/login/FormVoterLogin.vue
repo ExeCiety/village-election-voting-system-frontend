@@ -33,7 +33,7 @@ import type {
 
 const handleInputOTP = (event: Event) => {
   const target = event.target as HTMLInputElement
-  target.value = target.value.replace(/[^0-9]/g, '').slice(0, 8)
+  target.value = target.value.toString().toUpperCase()
   props.state.token = target.value
 }
 
