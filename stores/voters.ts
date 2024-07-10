@@ -20,19 +20,16 @@ export const useVoterStore = defineStore('Voter', {
                 method: 'GET',
             })
             if (!error.value) {
-                console.log(data.value.data.data)
                 this.voterSessions = data.value.data.data;
             } else {
                 throw error.value.data;
             }
         },
 
-        async createVoter({full_name }: VoterFormState) {
-            const { data, error } = await useApi<Responser.MessageResponse<VotersSerializer.VoterData>>('election-sessions', {
+        async createVoter(VoterFormState:any) {
+            const { data, error } = await useApi<Responser.MessageResponse<VotersSerializer.VoterData>>('voters', {
                 method: 'POST',
-                body: {
-                    name,
-                },
+                body: JSON.stringify(VoterFormState),
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -44,11 +41,17 @@ export const useVoterStore = defineStore('Voter', {
             }
         },
 
-        async updateVoter({id,  full_name }: VoterFormState) {
-            const { data, error } = await useApi<Responser.MessageResponse<VotersSerializer.VoterData>>('election-sessions/' + id, {
+        async updateVoter({id, election_session_id, full_name, nik, birth_date, address, gender}: VoterFormState) {
+            console.log("id",id)
+            const { data, error } = await useApi<Responser.MessageResponse<VotersSerializer.VoterData>>('voters/' + id, {
                 method: 'PATCH',
                 body: {
-                    name,
+                    election_session_id,
+                    full_name,
+                    nik,
+                    birth_date,
+                    address,
+                    gender,
                 },
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,8 +65,7 @@ export const useVoterStore = defineStore('Voter', {
         },
 
         async getByIdVoter(id:any) {
-            console.log("id",id)
-            const { data, error } = await useApi<Responser.MessageResponse<any>>('election-sessions/' + id, {
+            const { data, error } = await useApi<Responser.MessageResponse<any>>('voters/' + id, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -80,7 +82,7 @@ export const useVoterStore = defineStore('Voter', {
             }
         },
         deleteVoter(ids:any) {
-            const { data, error } = useApi<Responser.MessageResponse<VotersSerializer.VoterData>>('election-sessions/', {
+            const { data, error } = useApi<Responser.MessageResponse<VotersSerializer.VoterData>>('voters/', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

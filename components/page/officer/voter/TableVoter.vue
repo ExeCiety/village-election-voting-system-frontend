@@ -2,7 +2,7 @@
   <UTable :rows="props.data" :columns="props.columns">
     <template #no-data="{ row }">{{ row.no }}</template>
     <template #session_name-data="{ row }">
-<!--      {{ row.session.name }}-->
+    {{ row.election_session.name }}
     </template>
     <template #otp_status-data="{ row }">
       <span
@@ -44,11 +44,6 @@ const emit = defineEmits(['edit', 'delete'])
 
 const dropdownItems = (row: VoterResponse) => [
   [
-    {
-      label: 'Generate OTP',
-      icon: 'i-heroicons-arrow-path',
-      click: () => console.log('Generate OTP: ', row.id)
-    },
     {
       label: 'Edit',
       icon: 'i-heroicons-pencil-square-20-solid',
