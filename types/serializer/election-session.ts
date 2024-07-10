@@ -6,6 +6,7 @@ export declare namespace ElectionSessionSerializer {
         description: string
         image_url: string
         number: number
+        total_vote: number
         created_at: string
         updated_at: string
     }

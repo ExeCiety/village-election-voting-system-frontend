@@ -75,7 +75,7 @@ const voteCandidateUiState = reactive<VoteCandidateUiState>({
 
 const getCandidatePairs = async () => {
   try {
-    await electionSessionStore.getOngoingElectionSession({
+    await electionSessionStore.getOngoingElectionSessionForVoting({
       paginate: false
     })
   } catch (error: any) {

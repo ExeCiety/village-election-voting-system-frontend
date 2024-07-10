@@ -64,7 +64,3 @@ export type VoteCandidateUiState = {
   }
   error: string
 }
-
-export type GetOngoingCandidatePairsPayload = getPaginationResponse & {
-  //
-}
