@@ -1,4 +1,5 @@
 import type { Session } from './session.type'
+import type { getPaginationResponse } from "~/types/model/pagination.type";
 
 export type Candidate = {
   id: string
@@ -51,7 +52,6 @@ export type DetailState = {
   description: string
   photo_url: string
 }
-
 
 export type VoteCandidateState = {
   candidate_id: string
