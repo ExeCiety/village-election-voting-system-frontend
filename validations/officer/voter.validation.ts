@@ -18,7 +18,7 @@ export const CREATE_UPDATE: ZodType = z.object({
     .regex(/^[0-9]+$/, {
       message: 'Oops, NIK hanya boleh berisi angka'
     }),
-  name: z
+    full_name: z
     .string({
       required_error: 'Oops, nama tidak boleh kosong'
     })

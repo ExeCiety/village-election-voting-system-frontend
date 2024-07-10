@@ -28,20 +28,20 @@
           :disabled="props.uiState.disabledInputs.name"
         />
       </UFormGroup>
-      <UFormGroup size="lg" label="Waktu Mulai" name="start" required>
+      <UFormGroup size="lg" label="Waktu Mulai" name="start_date" required>
         <UInput
           type="datetime-local"
-          v-model="props.state.start"
+          v-model="props.state.start_date"
           size="lg"
-          :disabled="props.uiState.disabledInputs.start"
+          :disabled="props.uiState.disabledInputs.start_date"
         />
       </UFormGroup>
-      <UFormGroup size="lg" label="Waktu Selesai" name="end" required>
+      <UFormGroup size="lg" label="Waktu Selesai" name="end_date" required>
         <UInput
           type="datetime-local"
-          v-model="props.state.end"
+          v-model="props.state.end_date"
           size="lg"
-          :disabled="props.uiState.disabledInputs.end"
+          :disabled="props.uiState.disabledInputs.end_date"
         />
       </UFormGroup>
       <div class="flex items-center justify-end gap-3 pt-36">

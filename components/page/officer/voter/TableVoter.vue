@@ -2,7 +2,7 @@
   <UTable :rows="props.data" :columns="props.columns">
     <template #no-data="{ row }">{{ row.no }}</template>
     <template #session_name-data="{ row }">
-      {{ row.session.name }}
+<!--      {{ row.session.name }}-->
     </template>
     <template #otp_status-data="{ row }">
       <span
