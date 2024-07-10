@@ -59,24 +59,24 @@
             placeholder="Search..."
           />
           <div class="w-full 2xl:w-auto flex flex-wrap items-center gap-4">
-            <USelectMenu
-              class="font-medium w-full md:w-[48%] lg:w-full xl:w-[48%] 2xl:w-[215px] flex-shrink-0"
-              v-model="filterSessionName"
-              size="lg"
-              :options="['Filter by Session Name', ...sessions]"
-              placeholder="Filter by Session Name"
-              value-attribute="name"
-              option-attribute="name"
-              @change="changefilterSessionName"
-            />
-            <USelectMenu
-              class="font-medium w-full md:w-[48%] lg:w-full xl:w-[48%] 2xl:w-[192px] flex-shrink-0"
-              v-model="filterOtpStatus"
-              size="lg"
-              :options="['Filter by OTP Status', 'Available', 'Not Available']"
-              placeholder="Filter by OTP Status"
-              @change="changefilterOtpStatus"
-            />
+<!--            <USelectMenu-->
+<!--              class="font-medium w-full md:w-[48%] lg:w-full xl:w-[48%] 2xl:w-[215px] flex-shrink-0"-->
+<!--              v-model="filterSessionName"-->
+<!--              size="lg"-->
+<!--              :options="['Filter by Session Name', ...sessions]"-->
+<!--              placeholder="Filter by Session Name"-->
+<!--              value-attribute="name"-->
+<!--              option-attribute="name"-->
+<!--              @change="changefilterSessionName"-->
+<!--            />-->
+<!--            <USelectMenu-->
+<!--              class="font-medium w-full md:w-[48%] lg:w-full xl:w-[48%] 2xl:w-[192px] flex-shrink-0"-->
+<!--              v-model="filterOtpStatus"-->
+<!--              size="lg"-->
+<!--              :options="['Filter by OTP Status', 'Available', 'Not Available']"-->
+<!--              placeholder="Filter by OTP Status"-->
+<!--              @change="changefilterOtpStatus"-->
+<!--            />-->
             <UButton
               class="font-medium flex justify-center items-center flex-shrink-0"
               :class="[
@@ -140,7 +140,6 @@
 import { reactive, ref, computed, watch } from 'vue'
 import type { FormSubmitEvent } from '#ui/types'
 import { tableColumns, voters } from '~/data/model/voter'
-import { sessions } from '~/data/model/session'
 import type { Schema } from '~/types/validation/validation.type'
 import type {
   Voter,
@@ -149,6 +148,8 @@ import type {
   FormUiState as VoterFormUiState
 } from '~/types/model/voter.type'
 import { CREATE_UPDATE } from '~/validations/officer/voter.validation'
+import {useVoterStore} from "~/stores/voters";
+
 
 useHead({
   title: 'E-Voting - Pemilih'
@@ -174,9 +175,10 @@ const isButtonDeleteDisabled = computed(
 )
 
 const formState = reactive<VoterFormState>({
+  id: '',
   session_id: '',
   nik: '',
-  name: '',
+  full_name: '',
   birthdate: '',
   address: '',
   gender: ''
@@ -187,7 +189,7 @@ const uiFormState = reactive<VoterFormUiState>({
     button: false,
     session_id: false,
     nik: false,
-    name: false,
+    full_name: false,
     birthdate: false,
     address: false,
     gender: false
@@ -196,7 +198,7 @@ const uiFormState = reactive<VoterFormUiState>({
   errors: {
     session_id: '',
     nik: '',
-    name: '',
+    full_name: '',
     birthdate: '',
     address: '',
     gender: ''
@@ -206,7 +208,7 @@ const uiFormState = reactive<VoterFormUiState>({
 const toggleInputs = (status: boolean) => {
   uiFormState.disabledInputs.session_id = status
   uiFormState.disabledInputs.nik = status
-  uiFormState.disabledInputs.name = status
+  uiFormState.disabledInputs.full_name = status
   uiFormState.disabledInputs.birthdate = status
   uiFormState.disabledInputs.address = status
   uiFormState.disabledInputs.gender = status
@@ -217,7 +219,7 @@ const resetFormState = () => {
   Object.assign(formState, {
     session_id: '',
     nik: '',
-    name: '',
+    full_name: '',
     birthdate: '',
     address: '',
     gender: 'male'
@@ -243,7 +245,7 @@ const openModalFormEdit = (id: Voter['id']) => {
   Object.assign(formState, {
     session_id: voter!.session.id,
     nik: voter!.nik,
-    name: voter!.name,
+    full_name: voter!.full_name,
     birthdate: voter!.birthdate,
     address: voter!.address,
     gender: voter!.gender
@@ -302,25 +304,30 @@ watch(q, () => {
   page.value = 1
 })
 
+const storeVoter = useVoterStore()
+const { voterSessions } = storeToRefs(storeVoter);
+await storeVoter.getListVoter()
+
 const filtered = computed(() => {
   const offset = (page.value - 1) * limit.value
-  let filteredVoters: VoterResponse[] = voters
+  let filteredVoters: VoterResponse[] = storeVoter.voterSessions
 
-  if (filterOtpStatus.value === 'Available')
-    filteredVoters = filteredVoters.filter((voter) => voter.otp_status)
-
-  if (filterOtpStatus.value === 'Not Available')
-    filteredVoters = filteredVoters.filter((voter) => !voter.otp_status)
-
-  if (filterSessionName.value)
-    filteredVoters = filteredVoters.filter(
-      (voter) => voter.session.name === filterSessionName.value
-    )
+  console.log("call",filteredVoters)
+  // if (filterOtpStatus.value === 'Available')
+  //   filteredVoters = filteredVoters.filter((voter) => voter.otp_status)
+  //
+  // if (filterOtpStatus.value === 'Not Available')
+  //   filteredVoters = filteredVoters.filter((voter) => !voter.otp_status)
+  //
+  // if (filterSessionName.value)
+  //   filteredVoters = filteredVoters.filter(
+  //     (voter) => voter.session.name === filterSessionName.value
+  //   )
 
   filteredVoters = filteredVoters.filter(
     (voter) =>
       voter.nik.toLowerCase().includes(q.value.toLowerCase()) ||
-      voter.name.toLowerCase().includes(q.value.toLowerCase())
+      voter.full_name.toLowerCase().includes(q.value.toLowerCase())
   )
 
   return {
