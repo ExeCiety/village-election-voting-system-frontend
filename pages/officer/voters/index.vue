@@ -149,6 +149,7 @@ import type {
   DeleteIds as VoterDelete
 } from '~/types/model/voter.type'
 import { CREATE_UPDATE } from '~/validations/officer/voter.validation'
+
 import {useVoterStore} from "~/stores/voters";
 import type {DeleteIds as SessionDelete} from "~/types/model/session.type";
 

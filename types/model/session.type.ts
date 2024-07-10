@@ -1,3 +1,5 @@
+import type {getPaginationResponse} from "~/types/model/pagination.type";
+
 export type Session = {
   id: string
   name: string
@@ -29,4 +31,8 @@ export type FormUiState = {
     start_date: string
     end_date: string
   }
+}
+
+export type GetOngoingElectionSessionsPayload = getPaginationResponse & {
+  //
 }

@@ -43,7 +43,6 @@
 import {reactive, ref} from 'vue'
 import {useRouter} from 'vue-router'
 import type {VoteCandidateState, VoteCandidateUiState} from '~/types/model/candidate.type'
-import {useElectionSessionStore} from "~/stores/election-session";
 
 useHead({
   title: 'E-Voting - Dashboard',
@@ -75,7 +74,7 @@ const voteCandidateUiState = reactive<VoteCandidateUiState>({
 
 const getCandidatePairs = async () => {
   try {
-    await electionSessionStore.getOngoingElectionSession({
+    await electionSessionStore.getOngoingElectionSessionForVoting({
       paginate: false
     })
   } catch (error: any) {
