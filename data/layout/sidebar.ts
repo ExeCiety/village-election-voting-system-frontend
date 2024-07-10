@@ -21,7 +21,7 @@ export const sidebarMenuItems: SidebarMenuItems[] = [
     icon: 'i-heroicons-shopping-cart',
     label: 'Data Pemilih'
   },
-  { to: '/officer/tps', icon: 'i-heroicons-shopping-bag', label: 'Data TPS' },
+  // { to: '/officer/tps', icon: 'i-heroicons-shopping-bag', label: 'Data TPS' },
   {
     to: '/officer/officers',
     icon: 'i-heroicons-presentation-chart-line-solid',

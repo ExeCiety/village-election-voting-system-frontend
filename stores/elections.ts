@@ -1,16 +1,62 @@
 import { defineStore } from 'pinia';
 import { useApi } from '~/composables/useApi';
 import type {Responser} from "~/types/serializer/responser";
-import type {FormState as SessionFormState, Session} from "~/types/model/session.type";
+import type {
+    FormState as SessionFormState,
+    GetOngoingElectionSessionsPayload,
+    Session
+} from "~/types/model/session.type";
 import type {ElectionsSerializer} from "~/types/serializer/elections";
+import type {ElectionSessionSerializer} from "~/types/serializer/election-session";
 
 export const useElectionSessionStore = defineStore('electionSession', {
     state: () => ({
+        ongoingElectionSession: null as ElectionSessionSerializer.ElectionSessionData | null,
         electionSessions: [],
         loading: true,
         id: null,
     }),
     actions: {
+        async getOngoingElectionSessionForVoting(params: GetOngoingElectionSessionsPayload) {
+            const { data, error} = await useApi<Responser.MessageResponse<ElectionSessionSerializer.ElectionSessionPagination | ElectionSessionSerializer.ElectionSessionData[] | null>>('election-sessions/ongoing-for-voting', {
+                method: 'GET',
+                params: {
+                    ...params
+                },
+                default: () => ({
+                    message: '',
+                    data: null,
+                    error: null
+                })
+            })
+
+            if (!error.value) {
+                this.ongoingElectionSession = Array.isArray(data.value.data) ? (data.value.data?.[0] ?? null) : (data.value.data?.data[0] ?? null)
+            } else {
+                throw error.value.data
+            }
+        },
+
+        async getOngoingElectionSessionForResult(params: GetOngoingElectionSessionsPayload) {
+            const { data, error} = await useApi<Responser.MessageResponse<ElectionSessionSerializer.ElectionSessionPagination | ElectionSessionSerializer.ElectionSessionData[] | null>>('election-sessions/ongoing-for-result', {
+                method: 'GET',
+                params: {
+                    ...params
+                },
+                default: () => ({
+                    message: '',
+                    data: null,
+                    error: null
+                })
+            })
+
+            if (!error.value) {
+                this.ongoingElectionSession = Array.isArray(data.value.data) ? (data.value.data?.[0] ?? null) : (data.value.data?.data[0] ?? null)
+            } else {
+                throw error.value.data
+            }
+        },
+
         async getListElectionSession() {
             const { data, error } = await useApi<Responser.MessageResponse<ElectionsSerializer.ElectionData>>('election-sessions?paginate=true&per_page=10&page=1', {
                 method: 'GET',

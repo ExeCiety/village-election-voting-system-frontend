@@ -148,8 +148,6 @@ import type {
   FormUiState as VoterFormUiState
 } from '~/types/model/voter.type'
 import { CREATE_UPDATE } from '~/validations/officer/voter.validation'
-import {useVoterStore} from "~/stores/voters";
-
 
 useHead({
   title: 'E-Voting - Pemilih'
